@@ -17,7 +17,7 @@
 │
 ├── docs
 │   ├── README.md           README for docs
-│   └── milestone[i].md:    Documentation for each milestone
+│   └── milestone[i].md    Documentation for each milestone
 │
 ├── src:                    Package source files
 │   ├── AD.py               Main constructor
@@ -26,8 +26,8 @@
 │   └── AD_reverse.py       Reverse mode
 │
 └── tests                   Package test scripts
-    ├── run_tests.py:       script that runs all tests
-    └── test_[i].py:        tests function [i]
+    ├── run_tests.py       script that runs all tests
+    └── test_[i].py        tests function [i]
 
 ```
 ### What modules do you plan on including? What is their basic functions.
@@ -46,7 +46,7 @@ The modules we will include are
 * We will use both Github and PyPI to distribute our package, this allows the user to install our package using both `pip` or building straight from source.
 * We will also consider distribution using Anaconda since that is a popular numerical programming package distribution channel.
 
-How will you package your software? Will you  use a framework? If so which one and why? If not, why not?
+### How will you package your software? Will you  use a framework? If so which one and why? If not, why not?
 
 * We will not use a framework for our software because it is simple enough to not use a framework -- a framework will overcomplicate the design.
 * We will use `setup_tools` library to help us with package development.
