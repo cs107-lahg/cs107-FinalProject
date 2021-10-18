@@ -2,9 +2,44 @@
 
 ## Introduction
 
+Differentiation plays a key roles in modern algorithms in various scope of computational analysis, such as statistics, pythics, machine learning and deep learning which catches everyone's eyes in recent years. The Newton's method for finding root for functions without closed-form solution, backword propagation in training neural networks, and optimization (e.g. gradient descent) in machine learning algorithmns, all rely on differentiation as their coenerstone. Therefore, the ability to quickly, accurately and efficiently compute differentation is a crucial standard to assess an algorithm or method implemented. 
+
+There are many ways to compute derivatives in a machine, for example, numerical differentiation and symbolic differentiation. The numerical differentiation is finite-differences $\frac{df}{dx}=\frac{f(x+\epsilon)}{\epsilon}$ as $\epsilon$ goes to 0 to approximate the value of derivatives at a specific point. However,  choosing the most appropriate $\epsilon$ value is not a easy job. When the $\epsilon$ is too small, it has the problem of round-off errors associated with machine precision, and the approximation can be inaccurate when the $\epsilon$ is too large.
+For symbolic differentiation, it computes the expression of the derivative symbolically. This method is convenient for simple expression, but can be inefficient and difficult to compute when the expression goes complex to higher orders, expecially for gradient descent in machine learning when target function has a complex form.
+
+The "Automatic Differentiation (AD)", which represents a technique to compute derivative numarically at the specific point of a function, surpass these two methods mentioned above in both time and recourse efficiency and computational accurracy. AD is much faster as it only traverses through the computational graph in order to compute the numerical value of the derivative. In our ... package, we implement the AD for both forward and reverse mode. In section 2, you can find the details and background of AD. In section 3, you will get a sense of how to use our package. Section 4 and 5 provide detailed introduction about how our packge is planned. Section 6 is the short motivation for our license choice.
+
 ## Background
 
 ## How to use <AAD>
+
+Our automatic differentiation package can be installed using command line, as we are going to distribute our package in PyPI:
+```
+python -m pip install our_package
+```
+Then users can import the package and all modules included using the command:
+
+```python
+from our_package import *
+```
+
+To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example 
+
+```python
+x, y = AD.make_variables([2,1], [0,1])
+f = (x * y + AD.sin(x) + 1 - AD.cos(y))**0.5
+print(f"value = {f.val}; derivative = {f.der}")
+```
+
+For higer dimensional functions where the derivative output should be a Jacobian matrix, we envision users to get the result using Jacobian function of our package.
+
+```python
+x, y = AD.make_variables([2,1], [0,1])
+J=Jacobian([x+y, x-y, x*y])
+print(f"value = {J["val"]}; derivative = {J["der"]}")
+```
+
+
 
 ## Organization
 ### Directory structure and modules
@@ -89,5 +124,8 @@ The method and name attributes our class will have include:
 ### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
 
 * We will either be implementing dunder methods or creating functions for each elementary function. Whenever an elementary function needs to be applied to an intermediate value, we will pass the intermediate value into the method/function. For example, __add__, __sub__, __mul__, __truediv__, __sin__ and __cos__ will handle addition, subtraction, multiplication, division, sine and cosine functions, respectively. Values will be passed into the function and the operation will be applied to the values. For operations that don’t have default methods, like exp, power, log and sqrt, we will create functions to handle those operators. 
- 
 * To handle vectors as input, we will first check the length of our input to see if it is a vector or a scalar, Then based on the length, we will perform the specific operation. For vector functions of vectors, such as cross product, vectors will be passed into the function and the function will return a vector after an operation has been performed on them.
+
+## License
+
+We choose **MIT License** for our packgae, since it is simple and permissive. We want to enable others from the community to make use of our code and package, and we are also willing to accept contributions from the community such as forking. In our package we make use of existing open-source libraries such as NumPy and math, we would like to make our package open-source too. Currently we are not going to deal with patent issue, therefore the weak copyleft license works for us.
