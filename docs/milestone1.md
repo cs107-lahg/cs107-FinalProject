@@ -99,23 +99,24 @@ The modules we will include are
 
 ### What method and name attributes will your classes have?
 
-The method and name attributes our class will have include:
 * __init__: This method will initialize our parameters in our class
-* __add__: This method will be used to add two values together
-* __sub__: This method will be used to subtract a value from another
-* __mul__: This method will be used to multiply two values
-* __truediv__: This method will be used to divide a value by another
-* __sin__: This method will be used to find the sine of a value
-* __cos__: This method will be used to find the cosine of a value
-* self.getvalue: This method will return the value of an intermediate
-* self.getderivative: This method will return the derivative of an intermediate
-* self.make_variables: This method will create intermediates from values and seeds
-* self.exp: This method will return e raised to the power of the intermediate
-* self.power: This method will return the intermediate raised to a power
-* self.log: This method will return the log of an intermediate
-* self.sqrt: This method will return the square root of an intermediate
-* self.cross_product: This method will return the cross product of two vectors
 * __str__: This method will return a printed representation of a value and its derivative
+
+The following methods will return the function and the derivative as a tuple:
+* __add__: This method will be used to add two intermediates together
+* __sub__: This method will be used to subtract an intermediate value from another
+* __mul__: This method will be used to multiply two intermediate values
+* __truediv__: This method will be used to divide an intermediate value by another
+* __sin__: This method will be used to find the sine of an intermediate value
+* __cos__: This method will be used to find the cosine of an intermediate value
+* self.getvalue: This method will return the value of an intermediate value
+* self.getderivative: This method will return the derivative of an intermediate value
+* self.make_variables: This method will create intermediates from values and seeds
+* self.exp: This method will return e raised to the power of the intermediate and its derivative
+* self.power: This method will return the intermediate raised to a power and its derivative
+* self.log: This method will return the log of an intermediate and its derivative
+* self.sqrt: This method will return the square root of an intermediate and its derivative
+* self.cross_product: This method will return the cross product of two vectors
 
 ### What external dependencies will you rely on?
 
