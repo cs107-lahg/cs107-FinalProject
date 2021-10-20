@@ -94,42 +94,45 @@ The modules we will include are
 
 ### What are the core data structures?
 
-* The core data structures we will be using for our implementation are numpy arrays and python dictionaries to store our partial derivatives. 
+The core data structures we will be using for our implementation are numpy arrays and python dictionaries to store our partial derivatives. 
 
 ### What classes will you implement?
 
-* We will be creating one class called an AD class, which will handle our automatic differentiations. 
-* Within the class, we will be defining some parameters within our function, including self.val and self.der, which are the value and derivatives of an intermediate.
+We will be creating one class called an AD class, which will handle our automatic differentiations. Within the class, we will be defining some parameters within our function, including self.val and self.der, which are the value and derivatives of an intermediate.
 
 ### What method and name attributes will your classes have?
 
-* __init__: This method will initialize our parameters in our class
-* __str__: This method will return a printed representation of a value and its derivative
+The following methods, except __ init __ and __ str __, will return the function and the derivative as a tuple:
 
-The following methods will return the function and the derivative as a tuple:
-* __add__: This method will be used to add two intermediates together
-* __sub__: This method will be used to subtract an intermediate value from another
-* __mul__: This method will be used to multiply two intermediate values
-* __truediv__: This method will be used to divide an intermediate value by another
-* __sin__: This method will be used to find the sine of an intermediate value
-* __cos__: This method will be used to find the cosine of an intermediate value
-* self.getvalue: This method will return the value of an intermediate value
-* self.getderivative: This method will return the derivative of an intermediate value
-* self.make_variables: This method will create intermediates from values and seeds
-* self.exp: This method will return e raised to the power of the intermediate and its derivative
-* self.power: This method will return the intermediate raised to a power and its derivative
-* self.log: This method will return the log of an intermediate and its derivative
-* self.sqrt: This method will return the square root of an intermediate and its derivative
-* self.cross_product: This method will return the cross product of two vectors
+| __Class Methods__        | __Usage__          |
+| ------------- |---------------|
+| \_\_init\_\_     | This method will initialize our parameters in our class, including self.val and self.der |
+| \_\_str\_\_      | This method will return a printed representation of a value and its derivative      |
+| \_\_add\_\_ | This method will be used to add two intermediates together. This overloads the + operator |
+| \_\_sub\_\_ | This method will be used to subtract an intermediate value from another. This overloads the - operator |
+| \_\_mul\_\_ | This method will be used to multiply two intermediate values. It will use the product rule for differentiation. This overloads the * operator |
+| \_\_truediv\_\_ | This method will be used to divide an intermediate value by another. It will use the quotient rule for differentiation. This overloads the / operator |
+| \_\_sin\_\_ | This method will be used to find the sine of an intermediate value. It will calculate the cos for differentiation |
+| \_\_cos\_\_ | This method will be used to find the cosine of an intermediate value. It will calculate the -sin for differentiation |
+| self.getvalue | This method will return the value of an intermediate value |
+| self.getderivative | This method will return the derivative of an intermediate value |
+| self.make_variable | This method will create an initial variable |
+| self.exp | This method will return e raised to the power of the intermediate and its derivative |
+| self.power | This method will return the intermediate raised to a power and its derivative. This overloads the ** operator |
+| self.log |  This method will return the log of an intermediate and its derivative |
+| self.sqrt | This method will return the square root of an intermediate and its derivative |
+| self.cross_product | This method will return the cross product of two vectors |
+| self.set_seed | This method will take in a vector p and set it as the seed vector |
+
+To handle scalars and vectors as input, we will first check the length of our input to see if it is a vector or a scalar, then we will perform the specific operation for vector/scalar inputs. For vector functions of vectors, such as cross product, vectors will be passed into the function and the function will return a vector after an operation has been performed on them. Scalar functions of vectors, such as dot products, will take in vectors as input and return a scalar. Each of the functions listed above will handle both vectors and scalars as input.
 
 ### What external dependencies will you rely on?
 
-* An external dependency we will rely on is numpy to create our numpy arrays.
+For external dependencies, we will rely on numpy to create our numpy arrays and math to use mathematical functions for our elementary operations.
 
 ### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
 
-* We will either be implementing dunder methods or creating functions for each elementary function. Whenever an elementary function needs to be applied to an intermediate value, we will pass the intermediate value into the method/function. For example, __add__, __sub__, __mul__, __truediv__, __sin__ and __cos__ will handle addition, subtraction, multiplication, division, sine and cosine functions, respectively. Values will be passed into the function and the operation will be applied to the values. For operations that don’t have default methods, like exp, power, log and sqrt, we will create functions to handle those operators. 
-* To handle vectors as input, we will first check the length of our input to see if it is a vector or a scalar, Then based on the length, we will perform the specific operation. For vector functions of vectors, such as cross product, vectors will be passed into the function and the function will return a vector after an operation has been performed on them.
+We will either be implementing dunder methods or creating functions for each elementary function. Whenever an elementary function needs to be applied to an intermediate value, we will pass the intermediate value into the method/function. For example, \_\_add\_\_, \_\_sub\_\_, \_\_mul\_\_, \_\_truediv\_\_, \_\_sin\_\_ and \_\_cos\_\_ will handle addition, subtraction, multiplication, division, sine and cosine functions, respectively. Intermediate variables will be passed into the function and the operation will be applied to the variables. For operations that don’t have default methods, like exp, power, log and sqrt, we will create functions to handle those operators.
 
 ## License
 
