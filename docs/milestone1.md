@@ -2,12 +2,16 @@
 
 ## Introduction
 
-Differentiation plays a key roles in modern algorithms in various scope of computational analysis, such as statistics, pythics, machine learning and deep learning which catches everyone's eyes in recent years. The Newton's method for finding root for functions without closed-form solution, backword propagation in training neural networks, and optimization (e.g. gradient descent) in machine learning algorithmns, all rely on differentiation as their coenerstone. Therefore, the ability to quickly, accurately and efficiently compute differentation is a crucial standard to assess an algorithm or method implemented. 
+Differentiation plays a key role in modern algorithms in various fields of computational analysis, such as statistics, physics, machine learning and deep learning which are hot topics in  recent years. Newton's method for finding roots of functions without closed-form solution, backward propagation in training neural networks, and optimization (e.g. gradient descent) in machine learning algorithms, all rely on differentiation as their cornerstone. Therefore, the ability to quickly, accurately and efficiently compute differentiation is crucial. 
 
-There are many ways to compute derivatives in a machine, for example, numerical differentiation and symbolic differentiation. The numerical differentiation is finite-differences $\frac{df}{dx}=\frac{f(x+\epsilon)}{\epsilon}$ as $\epsilon$ goes to 0 to approximate the value of derivatives at a specific point. However,  choosing the most appropriate $\epsilon$ value is not a easy job. When the $\epsilon$ is too small, it has the problem of round-off errors associated with machine precision, and the approximation can be inaccurate when the $\epsilon$ is too large.
-For symbolic differentiation, it computes the expression of the derivative symbolically. This method is convenient for simple expression, but can be inefficient and difficult to compute when the expression goes complex to higher orders, expecially for gradient descent in machine learning when target function has a complex form.
+There are many ways to compute derivatives in a machine, for example, numerical differentiation and symbolic differentiation. For symbolic differentiation, it computes the expression of the derivative symbolically. This method is convenient for simple expressions, but can be inefficient and difficult to compute when the expression goes complex to higher orders, especially for gradient descent in machine learning when the target function has a complex form.
 
-The "Automatic Differentiation (AD)", which represents a technique to compute derivative numarically at the specific point of a function, surpass these two methods mentioned above in both time and recourse efficiency and computational accurracy. AD is much faster as it only traverses through the computational graph in order to compute the numerical value of the derivative. In our ... package, we implement the AD for both forward and reverse mode. In section 2, you can find the details and background of AD. In section 3, you will get a sense of how to use our package. Section 4 and 5 provide detailed introduction about how our packge is planned. Section 6 is the short motivation for our license choice.
+Numerical differentiation relies on finite-differences $\frac{df}{dx}=\frac{f(x+\epsilon)}{\epsilon}$ as $\epsilon$ goes to 0 to approximate the value of derivatives at a specific point. However,  choosing the most appropriate $\epsilon$ value is not an easy job. When the $\epsilon$ is too small, it has the problem of round-off errors associated with machine precision, and the approximation can be inaccurate when the $\epsilon$ is too large.
+
+"Automatic Differentiation (AD)", is a technique to  compute derivatives numerically at a specified point, and surpasses the above two methods e in both time and resource efficiency and computational accuracy. Taking the symbolic derivative of a function can be difficult for a computer to implement as the function becomes more complex. Specifically, vectorized functions are especially difficult to take derivatives of symbolically so AD is useful in allowing users to take the gradient of complex functions at particular numerical values using the function’s computational graph. Furthermore, AD completes the numerical derivatives without losing accuracy and also improves computational speed compared to traditional symbolic derivatives for complex functions.
+
+In our lahg_package, we implement the AD for both forward and reverse mode (The extension we choose). In section 2, you can find the details and mathematical background of AD. In section 3, you will get a sense of how to use our package. Section 4 and 5 provide a detailed introduction about how our package is planned. Section 6 is the short motivation for our license choice.
+
 
 ## Background
 
@@ -15,12 +19,12 @@ The "Automatic Differentiation (AD)", which represents a technique to compute de
 
 Our automatic differentiation package can be installed using command line, as we are going to distribute our package in PyPI:
 ```
-python -m pip install our_package
+python -m pip install lagh_package
 ```
 Then users can import the package and all modules included using the command:
 
 ```python
-from our_package import *
+import lagh_package as AD
 ```
 
 To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example 
@@ -28,14 +32,14 @@ To make use of automatic differentiation function, users will need to initiate A
 ```python
 x, y = AD.make_variables([2,1], [0,1])
 f = (x * y + AD.sin(x) + 1 - AD.cos(y))**0.5
-print(f"value = {f.val}; derivative = {f.der}")
+print(f"value = {f.getvalue()}; derivative = {f.getderivative()}")
 ```
 
 For higer dimensional functions where the derivative output should be a Jacobian matrix, we envision users to get the result using Jacobian function of our package.
 
 ```python
 x, y = AD.make_variables([2,1], [0,1])
-J=Jacobian([x+y, x-y, x*y])
+J=AD.Jacobian([x+y, x-y, x*y])
 print(f"value = {J["val"]}; derivative = {J["der"]}")
 ```
 
