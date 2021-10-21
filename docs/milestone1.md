@@ -6,7 +6,7 @@ Differentiation plays a key role in modern algorithms in various fields of compu
 
 There are many ways to compute derivatives in a machine, for example, numerical differentiation and symbolic differentiation. For symbolic differentiation, it computes the expression of the derivative symbolically. This method is convenient for simple expressions, but can be inefficient and difficult to compute when the expression goes complex to higher orders, especially for gradient descent in machine learning when the target function has a complex form.
 
-Numerical differentiation relies on finite-differences <img src="https://render.githubusercontent.com/render/math?math=\frac{df}{dx}=\frac{f(x+\epsilon)}{\epsilon}"> as <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> goes to 0 to approximate the value of derivatives at a specific point. However,  choosing the most appropriate <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> value is not an easy job. When the <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> is too small, it has the problem of round-off errors associated with machine precision, and the approximation can be inaccurate when the <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> is too large.
+Numerical differentiation relies on finite-differences <img src="https://latex.codecogs.com/svg.image?\frac{df}{dx}&space;\approx&space;\frac{f(x&plus;\epsilon)-f(x)}{\epsilon}" title="\frac{df}{dx} \approx \frac{f(x+\epsilon)-f(x)}{\epsilon}" /> as <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> goes to 0 to approximate the value of derivatives at a specific point. However,  choosing the most appropriate <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> value is not an easy job. When the <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> is too small, it has the problem of round-off errors associated with machine precision, and the approximation can be inaccurate when the <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> is too large.
 
 "Automatic Differentiation (AD)", is a technique to  compute derivatives numerically at a specified point, and surpasses the above two methods e in both time and resource efficiency and computational accuracy. Taking the symbolic derivative of a function can be difficult for a computer to implement as the function becomes more complex. Specifically, vectorized functions are especially difficult to take derivatives of symbolically so AD is useful in allowing users to take the gradient of complex functions at particular numerical values using the function’s computational graph. Furthermore, AD completes the numerical derivatives without losing accuracy and also improves computational speed compared to traditional symbolic derivatives for complex functions.
 
@@ -30,8 +30,8 @@ import lagh_package as AD
 To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example 
 
 ```python
-x = AD.make_variable(2,1)
-y = AD.make_variable(5,0)
+x = AD.make_variable([2,1])
+y = AD.make_variable([0,1])
 f = (x * y + AD.sin(x) + 1 - AD.cos(y))**0.5
 print(f"value = {f.getvalue()}; derivative = {f.getderivative()}")
 ```
@@ -39,8 +39,8 @@ print(f"value = {f.getvalue()}; derivative = {f.getderivative()}")
 For higer dimensional functions where the derivative output should be a Jacobian matrix, we envision users to get the result using Jacobian function of our package.
 
 ```python
-x = AD.make_variable(2,1)
-y = AD.make_variable(5,0)
+x = AD.make_variable([2,1])
+y = AD.make_variable([0,1])
 J=AD.Jacobian([x+y, x-y, x*y])
 print(f"value = {J["val"]}; derivative = {J["der"]}")
 ```
