@@ -10,7 +10,7 @@ Numerical differentiation relies on finite-differences <img src="https://latex.c
 
 "Automatic Differentiation (AD)", is a technique to  compute derivatives numerically at a specified point, and surpasses the above two methods e in both time and resource efficiency and computational accuracy. Taking the symbolic derivative of a function can be difficult for a computer to implement as the function becomes more complex. Specifically, vectorized functions are especially difficult to take derivatives of symbolically so AD is useful in allowing users to take the gradient of complex functions at particular numerical values using the function’s computational graph. Furthermore, AD completes the numerical derivatives without losing accuracy and also improves computational speed compared to traditional symbolic derivatives for complex functions.
 
-In our lahg_package, we implement the AD for both forward and reverse mode (The extension we choose). In section 2, you can find the details and mathematical background of AD. In section 3, you will get a sense of how to use our package. Section 4 and 5 provide a detailed introduction about how our package is planned. Section 6 is the short motivation for our license choice.
+In our lagh_ad package, we implement the AD for both forward and reverse mode (The extension we choose). In section 2, you can find the details and mathematical background of AD. In section 3, you will get a sense of how to use our package. Section 4 and 5 provide a detailed introduction about how our package is planned. Section 6 is the short motivation for our license choice.
 
 
 ## Background
@@ -19,12 +19,12 @@ In our lahg_package, we implement the AD for both forward and reverse mode (The 
 
 Our automatic differentiation package can be installed using command line, as we are going to distribute our package in PyPI:
 ```
-python -m pip install lagh_package
+python -m pip install lagh_ad
 ```
 Then users can import the package and all modules included using the command:
 
 ```python
-import lagh_package as AD
+import lagh_ad as AD
 ```
 
 To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example 
