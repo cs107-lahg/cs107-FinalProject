@@ -19,19 +19,19 @@ How do you use numerical methods like automatic differentiation to take derivati
 
 Let us consider the task of evaluating the following function from [Wikipedia](https://en.wikipedia.org/wiki/Automatic_differentiation) and finding its derivative:
 
-![function](function.png)
+![function](figures/m1function.png)
 
 The complex function f(g(h(x))) can be broken down into intermediate variables w0 through w3. First w0 = x, and for w0 we will find its value and derivative for a given value of x. We then “unwrap” the function from the inside out using successive intermediate values. For example, w1 = h(w0). Since we know the value of w0 for a given value of x, it is easy to compute the value of w1. Similarly, since we know the derivative of w0 with respect to input x, it is easy to compute the derivative of w1 using the chain rule. Similarly we can find the derivative of function y with respect to the input variable x by composing the intermediate results using chain rule as follows: 
 
-![formula1](formula1.png)
+![formula1](figures/m1formula1.png)
 
 Using this theory we can find the derivative of y above using AD. To do this, we construct a computational graph, with each intermediate as a circular node. Above each arrow is the elementary function that maps the input to output values: 
 
-![compgraph](compgraph.png)
+![compgraph](figures/m1compgraph.png)
 
 Using the computational graph and the chain rule, while evaluating the values for the intermediate variables we can simultaneously compute their derivatives. Plugging in previous values into successive rows yields a final value for the derivative using AD. 
 
- ![evaltable](evaltable.png)
+ ![evaltable](figures/m1evaltable.png)
 
 Each “row” in this table can be represented by a data structure called a dual number. A dual number takes the form of (b + c$\epsilon$) where $\epsilon$^2 = 0. In the dual number structure, b is the value of the function for a particular input x, and c is the derivative of the function with respect to that value of x. The final result of AD is the final row of the table above, and we can return a dual number to represent the value of the function y and the derivative of y at a particular x.
 If there are multiple input variables, then each intermediate variable can have multiple partial derivatives corresponding to each of the inputs. In the case of multiple input variables, forward AD computes a  Jacobian-vector product that consists of a matrix of each function’s partial derivatives evaluated at a point. Since a dual number can only store one derivative value in the dual part, each pass through AD will find the partial derivative of y with respect to a particular input variable. To specify which partial derivative to extract, you can set a “seed vector” p of your choosing (ex. For f(x1,x2), you can set p to [1,0] to find the partial derivative of the function with respect to input x1). At each intermediate variable, you consider the vector p and focus on deriving the partial derivative with respect to x1. You can take the dot product of the gradient (list of partial derivatives of the function) and seed vector p to get the partial derivative of the function with respect to input x1.
@@ -41,18 +41,19 @@ If there are multiple input variables, then each intermediate variable can have 
 
 Our automatic differentiation package can be installed using command line, as we are going to distribute our package in PyPI:
 ```
-python -m pip install lagh_package
+python -m pip install lagh_ad
 ```
 Then users can import the package and all modules included using the command:
 
 ```python
-import lagh_package as AD
+import lagh_ad as AD
 ```
 
 To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example 
 
 ```python
-x, y = AD.make_variables([2,1], [0,1])
+x = AD.make_variable([2,1])
+y = AD.make_variable([0,1])
 f = (x * y + AD.sin(x) + 1 - AD.cos(y))**0.5
 print(f"value = {f.getvalue()}; derivative = {f.getderivative()}")
 ```
@@ -60,7 +61,8 @@ print(f"value = {f.getvalue()}; derivative = {f.getderivative()}")
 For higer dimensional functions where the derivative output should be a Jacobian matrix, we envision users to get the result using Jacobian function of our package.
 
 ```python
-x, y = AD.make_variables([2,1], [0,1])
+x = AD.make_variable([2,1])
+y = AD.make_variable([0,1])
 J=AD.Jacobian([x+y, x-y, x*y])
 print(f"value = {J["val"]}; derivative = {J["der"]}")
 ```
@@ -71,24 +73,28 @@ print(f"value = {J["val"]}; derivative = {J["der"]}")
 ### Directory structure and modules
 
 ```
-<Project Name>
+lagh_ad
 ├── README.md               Main project README
 ├── requirements.txt        Package dependencies
 ├── setup.py                setup function for package
 │
-├── docs
+├── docs/                   Main project documentation
+│   ├── figures/            Folder for figures 
 │   ├── README.md           README for docs
-│   └── milestone[i].md    Documentation for each milestone
+│   └── milestone[x].md     Documentation for each milestone
+│  
 │
-├── src:                    Package source files
+├── dev/                    Project planning/development
+│  
+├── src/                    Package source files
 │   ├── AD.py               Main constructor
 │   ├── AD_helper.py        Helper functions
 │   ├── AD_forward.py       Forward mode
 │   └── AD_reverse.py       Reverse mode
 │
-└── tests                   Package test scripts
-    ├── run_tests.py       script that runs all tests
-    └── test_[i].py        tests function [i]
+└── tests/                  Package test scripts
+    ├── run_tests.py        script that runs all tests
+    └── test_[x].py         tests function [x]
 
 ```
 ### What modules do you plan on including? What is their basic functions.
@@ -100,7 +106,7 @@ The modules we will include are
 ### Where will your test suite live? Will you use TravisCI? CodeCov?
 
 * Our test suite will live in the `tests/` directory, which will contain scripts that tests each function in our class
-* TravisCI and CodeCov will be used to test our package and check code coverage.
+* TravisCI and CodeCov will be used to test our package and check code coverage after every commit that changes src/ files.
 
 ### How will you distribute your package (e.g. PyPI)?
 
@@ -111,6 +117,11 @@ The modules we will include are
 
 * We will not use a framework for our software because it is simple enough to not use a framework -- a framework will overcomplicate the design.
 * We will use `setup_tools` library to help us with package development.
+  
+### Other considerations
+
+* To maintain tidy git tree, we will structure our branches to be named `<github_username>/<milestone_name>`.
+* We will try to use the same code formatter such as `black` to maintain consistent code style across python files.
 
 ## Implementation
 
