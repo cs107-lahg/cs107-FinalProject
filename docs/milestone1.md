@@ -175,4 +175,4 @@ We choose **MIT License** for our package, since it is simple and permissive. We
 
 ## Feedback
 
-The feedback we received was that Python does not have \_\_sin\_\_ and \_\cos\_\_ dunder methods, so we will have to implement these two functions as `def sin(self, x)` and `def cos(self,x)`. We have updated this in the implementation section above.
+The feedback we received was that Python does not have \_\_sin\_\_ and \_\_cos\_\_ dunder methods, so we will have to implement these two functions as `def sin(self, x)` and `def cos(self,x)`. We have updated this in the implementation section above.
