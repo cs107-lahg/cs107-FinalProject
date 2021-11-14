@@ -12,18 +12,14 @@ def test_Variable():
     assert ad_var.val == 0
     assert ad_var.der == 1
     
-def test_variable_types():
-    with pytest.raises(TypeError):
-        assert ad.Variable('test')
-    
-def test_make_variables():
-    with pytest.raises(ValueError):
-        assert ad.make_variable(0,0) == (0, 0)
+# def test_variable_types():
+#     with pytest.raises(TypeError):
+#         assert ad.Variable('test')
         
-def test_make_variables():
-    with pytest.raises(ValueError):
-        assert ad.make_variable(0,0) == (0, 0)
-
+def test_make_variable():
+    assert ad.make_variable(3, 5).val == 3.0
+    assert ad.make_variable(3, 5).der == 5.0
+    
 def test_cos():
     x = ad.Variable(0)
     y = x.cos()
@@ -44,5 +40,7 @@ def test_sin():
 
 if __name__ == '__main__':
     print(ad.Variable('test'))
+    test_Variable()
+    # test_variable_types()
     # print(ad.Variable(0))
     # print(ad.Variable(0,5).exp().der)
