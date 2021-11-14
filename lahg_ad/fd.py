@@ -29,9 +29,31 @@ class Variable:
         derivative_seed : int or float, optional
             Give the derivative seed of the variable. The default is 1.
         """
+        if isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
+            self.val = value
+            self.der = derivative_seed
+        else: 
+            raise TypeError("Type of value and derivative seed must be int or float!")
+    
+    
+    def __repr__(self):
+        """
+        INPUTS
+        ------
+        None
+
+        RETURNS
+        -------
+        The attributes of the Variable object
         
-        self.val = value
-        self.der = derivative_seed
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 1)
+        >>> print(x)
+        value = 2, derivative = 1
+        """
+        
+        return f"value = {self.val}, derivative = {self.der}"
     
     
     def get_value(self):
@@ -48,8 +70,8 @@ class Variable:
         >>> x = Variable(2, 1)
         >>> print(x.get_value())
         2
-
         """
+        
         return self.val
     
     
@@ -292,8 +314,8 @@ def make_variables(var_list, der_list):
     """
     Function to create a list of Variable objects
 
-    Parameters
-    ----------
+    INPUTS
+    ------
     var_list : list of int or float
         input values of these new Variable objects.
     der_list : list of int or float
@@ -318,18 +340,20 @@ def make_variables(var_list, der_list):
         
     return variables
 
+
+
 def make_variable(var,der):
     """
     Function to create a Variable object
 
-    Parameters
-    ----------
+    INPUTS
+    ------
     var : int or float
         input value of the Variable object.
     der : int or float
         input derivative seed of the Variable object.
 
-    Returns
+    RETURNS
     -------
     A new Variable object
     
@@ -342,6 +366,7 @@ def make_variable(var,der):
     1
     """
     return Variable(var, der)
+
 
 
 if __name__ == "__main__":
