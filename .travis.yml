@@ -1,0 +1,12 @@
+language: python
+python:
+    - "3.6"
+before_install:
+    - pip install pytest pytest-cov
+    - pip install codecov
+    - pip install numpy
+env:
+    - CODECOV_TOKEN=2e59de18-6738-42ff-8715-b887c763e823
+script:
+    - pytest --cov=./
+    - codecov

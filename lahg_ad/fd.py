@@ -84,12 +84,13 @@ def make_variables(var_list, der_list):
 def make_variable(var,der):
     return Variable(var, der)
 
-#demos        
-x = make_variables([1,2], [0,1])
-print(x[1].get_value())
-print(x[0].get_derivative())
-y = make_variable(5, 1)
-print(y.get_value())
+#demos
+if __name__ == '__main__':
+    x = make_variables([1,2], [0,1])
+    print(x[1].get_value())
+    print(x[0].get_derivative())
+    y = make_variable(5, 1)
+    print(y.get_value())
 
 '''
 usage:
