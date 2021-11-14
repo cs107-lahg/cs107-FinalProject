@@ -4,7 +4,7 @@ import sys
 
 os.chdir(sys.path[0])
 sys.path.append('../lahg_ad/')
-import ad as ad
+import fd as ad
 import numpy as np
 
 def test_Variable():
