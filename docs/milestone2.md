@@ -93,48 +93,27 @@ print(f)
 
 ```
 lagh_ad
-
-├── README.md Main project README
-
-├── requirements.txt Package dependencies
-
-├── setup.py setup function for package
-
+├── README.md               Main project README
+├── requirements.txt        Package dependencies
+├── setup.py                setup function for package
 │
-
-├── docs/ Main project documentation
-
-│ ├── figures/ Folder for figures
-
-│ ├── README.md README for docs
-
-│ └── milestone[x].md Documentation for each milestone
-
+├── docs/                   Main project documentation
+│   ├── figures/            Folder for figures
+│   ├── README.md           README for docs
+│   └── milestone[x].md     Documentation for each milestone
 │
-
 │
-
-├── dev/ Project planning/development
-
+├── dev/                    Project planning/development
 │
-
-├── src/ Package source files
-
-│ ├── AD.py Main constructor
-
-│ ├── AD_helper.py Helper functions
-
-│ ├── AD_forward.py Forward mode
-
-│ └── AD_reverse.py Reverse mode
-
+├── src/                    Package source files
+│   ├── AD.py               Main constructor
+│   ├── AD_helper.py        Helper functions
+│   ├── AD_forward.py       Forward mode
+│   └── AD_reverse.py       Reverse mode
 │
-
-└── tests/ Package test scripts
-
-├── run_tests.py script that runs all tests
-
-└── test_[x].py tests function [x]
+└── tests/                  Package test scripts
+    ├── run_tests.py        script that runs all tests
+    └── test_[x].py         tests function [x]
 
 ```
 
