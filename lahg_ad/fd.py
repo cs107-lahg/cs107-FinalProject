@@ -179,7 +179,7 @@ class Variable:
         """
         
         value = np.tan(self.val)
-        derivative = (1 / np.cos(self.val)) ** 2 * self.der
+        derivative = (1 / (np.cos(self.val) ** 2))* self.der
         return Variable(value, derivative)
     
     
@@ -307,6 +307,69 @@ class Variable:
         value = np.exp(self.val)
         derivative = np.exp(self.val) * self.der
         return Variable(value, derivative)
+    
+    def __eq__(self, other):
+        """
+        method for checking if two Variable objects are equal
+        
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        bool
+            if the values and derivatives of them are equal, it returns True, otherwise it returns False.
+            
+        EXAMPLES
+        --------
+        >>> x = Variable(3, 5)
+        >>> y = Variable(3, 5)
+        >>> x == y
+        True
+
+        """
+        try:
+            if (self.val == other.val) and (self.der == other.der):
+                return True
+            else:
+                return False
+        except:
+            return False
+        
+    
+    def __ne__(self, other):
+        """
+        method for checking if two Variable objects are not equal
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        bool
+            if the values and derivatives of them are equal, it returns False, otherwise it returns True.
+            
+        EXAMPLES:
+        --------
+        >>> x = Variable(3, 5)
+        >>> y = Variable(3, 5)
+        >>> x != y
+        False
+        """
+        
+        try:
+            if (self.val == other.val) and (self.der ==other.der):
+                return False
+            else: 
+                return True
+        except:
+            return True
+            
+            
+    
+        
     
     
     
