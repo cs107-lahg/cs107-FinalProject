@@ -1,7 +1,7 @@
 language: python
 branches:
     only:
-    - master
+    - main
     - stable
 python:
     - "3.6"
