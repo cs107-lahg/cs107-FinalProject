@@ -92,6 +92,31 @@ class Variable:
 
         """
         return self.der
+        
+    def __neg__(self):
+        """
+        method for taking negative of a Variable object
+        
+        INPUTS
+        ------
+        None
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES:
+        --------
+        >>> x = Variable(2, 7)
+        >>> y = - x
+        >>> y.val
+        -2
+        >>> y.der
+        -7
+        """
+        value = - self.val
+        derivative = - self.der
+        return Variable(value, derivative)
     
     
     def sin(self):
