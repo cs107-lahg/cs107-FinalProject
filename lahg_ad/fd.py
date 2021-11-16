@@ -9,7 +9,7 @@ import numpy as np
 
 class Variable:
     """
-    This is the Varibale class with basic methods and operation overloading. 
+    This is the Variable class with basic methods and operation overloading. 
     It is used to perform forward mode automatic differentiation for scalar/vector input of scalar function.
 
     EXAMPLES
@@ -105,7 +105,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the sin function.
+            This Variable object has the value and derivative of the sin function.
             
         EXAMPLES
         --------
@@ -133,7 +133,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the cos function.
+            This Variable object has the value and derivative of the cos function.
             
         EXAMPLES
         --------
@@ -161,7 +161,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the tan function.
+            This Variable object has the value and derivative of the tan function.
             
         NOTES
         -----
@@ -199,7 +199,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the arcsin function.
+            This Variable object has the value and derivative of the arcsin function.
             
         EXAMPLES
         --------
@@ -234,7 +234,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the arccos function.
+            This Variable object has the value and derivative of the arccos function.
             
         EXAMPLES
         --------
@@ -264,7 +264,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the arctan function.
+            This Variable object has the value and derivative of the arctan function.
             
         EXAMPLES
         --------
@@ -292,7 +292,7 @@ class Variable:
         RETURNS
         -------
         A Variable object
-            This Varibale object has the value and derivative of the exp function.
+            This Variable object has the value and derivative of the exp function.
             
         EXAMPLES
         --------
@@ -366,12 +366,124 @@ class Variable:
                 return True
         except:
             return True
+
+
+    def __add__(self, other):
+        """
+        method for adding two Variable objects
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the sum of the value and derivative of the two Variable objects.
             
-            
-    
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 2)
+        >>> y = Variable(4, 4)
+        >>> z = x + y
+        >>> print(z.value())
+        9
+        >>> print(z.get_derivative())
+        6
+        """
         
-    
-    
+        value = self.val + other.val
+        derivative = self.der + other.der
+        return Variable(value, derivative)
+
+    def __sub__(self, other):
+        """
+        method for subtracting one Variable object from another
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the difference of the value and derivative of the two Variable objects.
+            
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 6)
+        >>> y = Variable(4, 4)
+        >>> z = x - y
+        >>> print(z.value())
+        1
+        >>> print(z.get_derivative())
+        2
+        """
+        
+        value = self.val - other.val
+        derivative = self.der - other.der
+        return Variable(value, derivative)
+
+    def __mul__(self, other):
+        """
+        method for multiplying two Variable objects
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the product of the value and derivative of the two Variable objects.
+            
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 6)
+        >>> y = Variable(4, 4)
+        >>> z = x * y
+        >>> print(z.value())
+        20
+        >>> print(z.get_derivative())
+        44
+        """
+        
+        value = self.val * other.val
+        derivative = self.val * other.der + other.val * self.der
+        return Variable(value, derivative)
+
+    def __truediv__(self, other):
+        """
+        method for dividing one Variable object from another
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the quotient of the value and derivative of the two Variable objects.
+            
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 6)
+        >>> y = Variable(5, 4)
+        >>> z = x / y
+        >>> print(z.value())
+        1
+        >>> print(z.get_derivative())
+        0.4
+        """
+        
+        value = self.val / other.val
+        derivative = (self.der * other.val - self.val * other.der)/(other.self * other.self)
+        return Variable(value, derivative)
+            
     
 def make_variables(var_list, der_list):
     """
