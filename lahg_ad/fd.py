@@ -393,9 +393,14 @@ class Variable:
         6
         """
         
-        value = self.val + other.val
-        derivative = self.der + other.der
-        return Variable(value, derivative)
+        try:
+            new_val = self.val + other.val
+            new_der = self.der + other.der
+            return Variable(new_val, new_der)
+        except AttributeError:
+            new_val = self.val + other
+            new_der = self.der
+            return Variable(new_val, new_der)
 
     def __sub__(self, other):
         """
@@ -421,10 +426,15 @@ class Variable:
         >>> print(z.get_derivative())
         2
         """
-        
-        value = self.val - other.val
-        derivative = self.der - other.der
-        return Variable(value, derivative)
+
+        try:
+            new_val = self.val - other.val
+            new_der = self.der - other.der
+            return Variable(new_val, new_der)
+        except AttributeError:
+            new_val = self.val - other
+            new_der = self.der
+            return Variable(new_val, new_der)
 
     def __mul__(self, other):
         """
@@ -451,9 +461,14 @@ class Variable:
         44
         """
         
-        value = self.val * other.val
-        derivative = self.val * other.der + other.val * self.der
-        return Variable(value, derivative)
+        try:
+            new_val = self.val * other.val
+            new_der = self.val * other.der + other.val * self.der
+            return Variable(new_val, new_der)
+        except AttributeError:
+            new_val = self.val * other
+            new_der = self.der * other
+            return Variable(new_val, new_der)
 
     def __truediv__(self, other):
         """
@@ -479,10 +494,25 @@ class Variable:
         >>> print(z.get_derivative())
         0.4
         """
-        
-        value = self.val / other.val
-        derivative = (self.der * other.val - self.val * other.der)/(other.self * other.self)
-        return Variable(value, derivative)
+
+        try:
+            new_val = self.val / other.val
+            new_der = (self.der * other.val - self.val * other.der)/(other.self * other.self)
+            return Variable(new_val, new_der)
+        except AttributeError:
+            new_val = self.val / other
+            new_der = self.der / other
+            return Variable(new_val, new_der)
+        except ZeroDivisionError:
+            print("Cannot divide by 0.")
+
+    __radd__ = __add__
+
+    __rsub__ = __sub__
+
+    __rmul__ = __mul__
+
+    __rtruediv__ = __truediv__
             
     
 def make_variables(var_list, der_list):
