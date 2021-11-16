@@ -76,7 +76,7 @@ def test_exp():
     
 def test_tan():
     assert ad.Variable(1.05, 1).tan().val == np.tan(1.05)
-    assert ad.Variable(1.05, 1).tan().der == 1/(np.cos(1.05)**2)
+    assert ad.Variable(1.05, 1).tan().der == pytest.approx(1/(np.cos(1.05)**2))
     
 def test_arctan():
     value, deriv_seed = np.random.uniform(size=2)
