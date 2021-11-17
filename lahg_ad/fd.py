@@ -313,6 +313,66 @@ class Variable:
         return Variable(value, derivative)
     
     
+    def sinh(self):
+        """
+        Value and derivative computation of sinh function
+        
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 5)
+        >>> print(np.sinh(x))
+        value = 3.6268604078470186, derivative = 18.81097845541816
+        """
+        
+        val = np.sinh(self.val)
+        der = np.cosh(self.val) * self.der
+        return Variable(val, der)
+    
+    
+    def cosh(self):
+        """
+        Value and derivative computation of cosh function
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(6, 1)
+        >>> print(np.cosh(x))
+        value = 201.7156361224559, derivative = 201.71315737027922
+        """
+        
+        val = np.cosh(self.val)
+        der = np.sinh(self.val) * self.der
+        return Variable(val, der)
+    
+    
+    def tanh(self):
+        """
+        Value and derivative computation of tanh function
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 1)
+        >>> print(np.tanh(x))
+        value = 0.9640275800758169, derivative = 0.07065082485316447
+        """
+        
+        val = np.tanh(self.val)
+        der = (1 / (np.cosh(self.val) ** 2)) * self.der
+        return Variable(val, der)
+    
+    
     def exp(self):
         """
         Value and derivative computation of exp function
