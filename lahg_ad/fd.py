@@ -13,8 +13,19 @@ class Variable:
     It is used to perform forward mode automatic differentiation for scalar/vector input of scalar function.
 
     EXAMPLES
-    ============
-
+    ========
+    # scalar input
+    >>> x = Variable(6, 1)
+    >>> f = 15 / (x * 3 + 10)
+    >>> print(f)
+    value = 0.5357142857142857, derivative = -0.05739795918367347
+    
+    # vector input
+    >>> x = Variable(2, 1)
+    >>> y = Variable(3, 0)
+    >>> f = (x + y) * y
+    >>> print(f)
+    value = 15, derivative = 3
     """
    
     
@@ -28,7 +39,14 @@ class Variable:
             Give the value of the variable
         derivative_seed : int or float, optional
             Give the derivative seed of the variable. The default is 1.
+            
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 1)
+        >>> print(x)
+        value = 2, derivative = 1
         """
+        
         if isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
             self.val = value
             self.der = derivative_seed
@@ -38,6 +56,8 @@ class Variable:
     
     def __repr__(self):
         """
+        Dunder method for printing output
+        
         INPUTS
         ------
         None
@@ -92,10 +112,11 @@ class Variable:
 
         """
         return self.der
-        
+      
+    
     def __neg__(self):
         """
-        method for taking negative of a Variable object
+        Method for taking negative of a Variable object
         
         INPUTS
         ------
@@ -108,12 +129,10 @@ class Variable:
         EXAMPLES:
         --------
         >>> x = Variable(2, 7)
-        >>> y = - x
-        >>> y.val
-        -2
-        >>> y.der
-        -7
+        >>> print(- x)
+        value = -2, derivative = -7
         """
+        
         value = - self.val
         derivative = - self.der
         return Variable(value, derivative)
@@ -136,10 +155,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 1)
-        >>> print(np.sin(x).get_value())
-        -0.9589242746631385
-        >>> print(np.sin(x).get_derivative())
-        0.2836621854632263
+        >>> print(np.sin(x))
+        value = -0.9589242746631385, derivative = 0.2836621854632263
         """
         
         value = np.sin(self.val)
@@ -164,10 +181,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 2)
-        >>> print(np.cos(x).get_value())
-        0.2836621854632263
-        >>> print(np.cos(x).get_derivative())
-        1.917848549326277
+        >>> print(np.cos(x))
+        value = 0.2836621854632263, derivative = 1.917848549326277
         """
         
         value = np.cos(self.val)
@@ -197,10 +212,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(np.pi, 1)
-        >>> print(np.tan(x).get_value())
-        -1.2246467991473532e-16
-        >>> print(np.tan(x).get_derivative())
-        1.0
+        >>> print(np.tan(x))
+        value = -1.2246467991473532e-16, derivative = 1.0
         """
         
         value = np.tan(self.val)
@@ -230,10 +243,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(0.5, 1)
-        >>> print(np.arcsin(x).get_value())
-        0.5235987755982988
-        >>> print(np.arcsin(x).get_derivative())
-        1.1547005383792517
+        >>> print(np.arcsin(x))
+        value = 0.5235987755982988, derivative = 1.1547005383792517
         """
         
         if abs(self.val) >= 1:
@@ -265,10 +276,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(0.5, 1)
-        >>> print(np.arccos(x).get_value())
-        1.0471975511965976
-        >>> print(np.arccos(x).get_derivative())
-        -1.1547005383792517
+        >>> print(np.arccos(x))
+        value = 1.0471975511965976, derivative = -1.1547005383792517
         """
         
         if abs(self.val) >= 1:
@@ -295,15 +304,73 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(2, 1)
-        >>> print(np.arctan(x).get_value())
-        1.1071487177940906
-        >>> print(np.arctan(x).get_derivative())
-        0.2
+        >>> print(np.arctan(x))
+        value = 1.1071487177940906, derivative = 0.2
         """
         
         value = np.arctan(self.val)
         derivative = 1 / (1 + self.val ** 2) * self.der
         return Variable(value, derivative)
+    
+    
+    def sinh(self):
+        """
+        Value and derivative computation of sinh function
+        
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 5)
+        >>> print(np.sinh(x))
+        value = 3.6268604078470186, derivative = 18.81097845541816
+        """
+        
+        val = np.sinh(self.val)
+        der = np.cosh(self.val) * self.der
+        return Variable(val, der)
+    
+    
+    def cosh(self):
+        """
+        Value and derivative computation of cosh function
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(6, 1)
+        >>> print(np.cosh(x))
+        value = 201.7156361224559, derivative = 201.71315737027922
+        """
+        
+        val = np.cosh(self.val)
+        der = np.sinh(self.val) * self.der
+        return Variable(val, der)
+    
+    
+    def tanh(self):
+        """
+        Value and derivative computation of tanh function
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(2, 1)
+        >>> print(np.tanh(x))
+        value = 0.9640275800758169, derivative = 0.07065082485316447
+        """
+        
+        val = np.tanh(self.val)
+        der = (1 / (np.cosh(self.val) ** 2)) * self.der
+        return Variable(val, der)
     
     
     def exp(self):
@@ -323,10 +390,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 2)
-        >>> print(np.exp(x).get_value())
-        148.4131591025766
-        >>> print(np.exp(x).get_derivative())
-        296.8263182051532
+        >>> print(np.exp(x))
+        value = 148.4131591025766, derivative = 296.8263182051532
         """
         
         value = np.exp(self.val)
@@ -335,7 +400,7 @@ class Variable:
     
     def __eq__(self, other):
         """
-        method for checking if two Variable objects are equal
+        Method for checking if two Variable objects are equal
         
         INPUTS
         ------
@@ -352,7 +417,11 @@ class Variable:
         >>> y = Variable(3, 5)
         >>> x == y
         True
-
+        
+        >>> x = Variable(3, 5)
+        >>> y = Variable(3, 6)
+        >>> x == y
+        False
         """
         try:
             if (self.val == other.val) and (self.der == other.der):
@@ -365,7 +434,7 @@ class Variable:
     
     def __ne__(self, other):
         """
-        method for checking if two Variable objects are not equal
+        Method for checking if two Variable objects are not equal
 
         INPUTS
         ------
@@ -395,7 +464,7 @@ class Variable:
 
     def __add__(self, other):
         """
-        method for adding two Variable objects
+        Method for adding 
 
         INPUTS
         ------
@@ -408,14 +477,17 @@ class Variable:
             
         EXAMPLES
         --------
-        >>> import numpy as np
+        # addition of two Variable objects
         >>> x = Variable(5, 2)
         >>> y = Variable(4, 4)
-        >>> z = x + y
-        >>> print(z.value())
-        9
-        >>> print(z.get_derivative())
-        6
+        >>> print(x + y)
+        value = 9, derivative = 6
+        
+        # addition of one Variable object and a real number
+        >>> x = Variable(5, 1)
+        >>> y = 10
+        >>> print(x + y)
+        value = 15, derivative = 1
         """
         
         try:
@@ -427,9 +499,10 @@ class Variable:
             new_der = self.der
             return Variable(new_val, new_der)
 
+
     def __sub__(self, other):
         """
-        method for subtracting one Variable object from another
+        Method for subtracting 
 
         INPUTS
         ------
@@ -442,14 +515,17 @@ class Variable:
             
         EXAMPLES
         --------
-        >>> import numpy as np
+        # subtraction of two Variable objects
         >>> x = Variable(5, 6)
         >>> y = Variable(4, 4)
-        >>> z = x - y
-        >>> print(z.value())
-        1
-        >>> print(z.get_derivative())
-        2
+        >>> print(x - y)
+        value = 1, derivative = 2
+        
+        # subtraction of one Variable object and a real number
+        >>> x = Variable(5, 1)
+        >>> y = 5
+        >>> print(x - y)
+        value = 0, derivative = 1
         """
 
         try:
@@ -460,10 +536,11 @@ class Variable:
             new_val = self.val - other
             new_der = self.der
             return Variable(new_val, new_der)
+        
 
     def __mul__(self, other):
         """
-        method for multiplying two Variable objects
+        Method for multiplying 
 
         INPUTS
         ------
@@ -476,14 +553,17 @@ class Variable:
             
         EXAMPLES
         --------
-        >>> import numpy as np
+        # multiplication of two Variable objects
         >>> x = Variable(5, 6)
         >>> y = Variable(4, 4)
-        >>> z = x * y
-        >>> print(z.value())
-        20
-        >>> print(z.get_derivative())
-        44
+        >>> print(x * y)
+        value = 20, derivative = 44
+        
+        # multiplication of a Variable object and a real number
+        >>> x = Variable(5, 6)
+        >>> y = 10
+        >>> print(x * y)
+        value = 50, derivative = 60
         """
         
         try:
@@ -494,6 +574,7 @@ class Variable:
             new_val = self.val * other
             new_der = self.der * other
             return Variable(new_val, new_der)
+
 
     def __truediv__(self, other):
         """
@@ -510,34 +591,174 @@ class Variable:
             
         EXAMPLES
         --------
+        # test division of two Variable object
         >>> import numpy as np
         >>> x = Variable(5, 6)
         >>> y = Variable(5, 4)
         >>> z = x / y
-        >>> print(z.value())
-        1
-        >>> print(z.get_derivative())
-        0.4
+        >>> print(z)
+        value = 1.0, derivative = 0.4
+        
+        # test division of a Variable object and a real number
+        >>> import numpy as np
+        >>> x = Variable(5, 6)
+        >>> y = 5
+        >>> z = x / y
+        >>> print(z)
+        value = 1.0, derivative = 1.2
         """
-
+        
         try:
+            if other.val == 0:
+                raise ZeroDivisionError("Cannot divide by zero!")
             new_val = self.val / other.val
-            new_der = (self.der * other.val - self.val * other.der)/(other.self * other.self)
+            new_der = (self.der * other.val - self.val * other.der)/(other.val ** 2)
             return Variable(new_val, new_der)
         except AttributeError:
+            if other == 0:
+                raise ZeroDivisionError("Cannot divide by zero!")
             new_val = self.val / other
             new_der = self.der / other
             return Variable(new_val, new_der)
-        except ZeroDivisionError:
-            print("Cannot divide by 0.")
+        
+            
+    
+    def __radd__(self, other):
+        """
+        Method for performing addition 
 
-    __radd__ = __add__
+        INPUTS
+        ------
+        other : A Variable object
+            
 
-    __rsub__ = __sub__
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        # addition of a Variable object and a number
+        >>> x = Variable(2, 5)
+        >>> z = 3 + x
+        >>> print(z)
+        value = 5, derivative = 5
+        
+        # addition of two Variable objects
+        >>> x = Variable(1, 2)
+        >>> y = Variable(2 ,3)
+        >>> print(x + y)
+        value = 3, derivative = 5
+        """
+        
+        return self.__add__(other)
 
-    __rmul__ = __mul__
 
-    __rtruediv__ = __truediv__
+    def __rmul__(self, other):
+        """
+        Method for performing multiplication 
+        
+        INPUTS
+        ----------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES:
+        --------
+        # multiplication of two Variable objects
+        >>> x = Variable(2, 3)
+        >>> y = Variable(3, 4)
+        >>> print(x * y)
+        value = 6, derivative = 17
+        
+        # multiplication of a Variable object and a number 
+        >>> x = Variable(5, 6)
+        >>> y = 3
+        >>> print(y * x)
+        value = 15, derivative = 18
+        """
+        
+        return self.__mul__(other)
+    
+    
+    def __rsub__(self, other):
+        """
+        Method for performing subtraction 
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        # subtraction of a Variable object and a real number
+        >>> x = Variable(0)
+        >>> y = 10
+        >>> print(y - x)
+        value = 10, derivative = -1
+        
+        # subtraction of two Variable objects
+        >>> x = Variable(3, 5)
+        >>> y = Variable(2, 3)
+        >>> print(y - x)
+        value = -1, derivative = -2
+        """
+        
+        return other + (-self)
+        
+        
+
+    def __rtruediv__(self, other):
+        """
+        Method for performing division
+
+        INPUTS
+        ------
+        other : A Variable object
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        # division of two Variable objects
+        >>> x = Variable(2, 3)
+        >>> y = Variable(1, 2)
+        >>> print(y / x)
+        value = 0.5, derivative = 0.25
+        
+        # division of a Variable object and a number
+        >>> x = Variable(2, 3)
+        >>> y = 10
+        >>> print(y / x)
+        value = 5.0, derivative = -7.5
+        
+        # 0 divides a Variable object
+        >>> y = 0
+        >>> x=Variable(1, 2)
+        >>> print(0 / x)
+        value = 0.0, derivative = 0.0
+        """
+        
+        if self.val == 0:
+                raise ZeroDivisionError("Cannot divide by zero!")
+        try:
+            new_val = other.val / self.val
+            new_der = (other.der * self.val - other.val * self.der)/(self.val ** 2)
+            return Variable(new_val, new_der)
+        except AttributeError:
+            new_val = other / self.val
+            new_der = - other/ (self.val ** 2) * self.der
+            return Variable(new_val, new_der)
+
             
     
 def make_variables(var_list, der_list):
@@ -559,6 +780,14 @@ def make_variables(var_list, der_list):
     RETURNS
     -------
     variables : list of new Variable objects created.
+    
+    EXAMPLES
+    --------
+    >>> x = make_variables([1, 2], [1, 0])
+    >>> print(x[0])
+    value = 1, derivative = 1
+    >>> print(x[1])
+    value = 2, derivative = 0
     """
     
     if len(var_list) != len(der_list):
@@ -590,10 +819,8 @@ def make_variable(var,der):
     EXAMPLES
     --------
     >>> x = make_variable(1, 1)
-    >>> print(x.get_derivative())
-    1
-    >>> print(x.get_value())
-    1
+    >>> print(x)
+    value = 1, derivative = 1
     """
     return Variable(var, der)
 
