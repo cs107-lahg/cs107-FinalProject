@@ -80,6 +80,10 @@ class Variable:
         """
         Method for getting the value of a Variable object
 
+        INPUTS
+        ------
+        None
+        
         RETURNS
         -------
         int or float
@@ -99,6 +103,10 @@ class Variable:
         """
         Method for getting the value of a Variable object
 
+        INPUTS
+        ------
+        None
+        
         RETURNS
         -------
         int or float
@@ -155,7 +163,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 1)
-        >>> print(np.sin(x))
+        >>> f = x.sin()
+        >>> print(f)
         value = -0.9589242746631385, derivative = 0.2836621854632263
         """
         
@@ -176,12 +185,12 @@ class Variable:
         -------
         A Variable object
             This Variable object has the value and derivative of the cos function.
-            
+                    
         EXAMPLES
         --------
-        >>> import numpy as np
         >>> x = Variable(5, 2)
-        >>> print(np.cos(x))
+        >>> f = x.cos()
+        >>> print(f)
         value = 0.2836621854632263, derivative = 1.917848549326277
         """
         
@@ -206,13 +215,14 @@ class Variable:
         NOTES
         -----
         The function tan doesn't exist at odd multiple of pi/2, however, due to machine precision, the input will 
-        never be exactly equal to odd multiple of pi/2. Therefore no ValueError will be raise.
+        never be exactly equal to odd multiple of pi/2. Therefore no ValueError will be raised.
         
         EXAMPLES
         --------
         >>> import numpy as np
         >>> x = Variable(np.pi, 1)
-        >>> print(np.tan(x))
+        >>> f = x.tan()
+        >>> print(f)
         value = -1.2246467991473532e-16, derivative = 1.0
         """
         
@@ -243,7 +253,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(0.5, 1)
-        >>> print(np.arcsin(x))
+        >>> f = x.arcsin()
+        >>> print(f)
         value = 0.5235987755982988, derivative = 1.1547005383792517
         """
         
@@ -276,7 +287,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(0.5, 1)
-        >>> print(np.arccos(x))
+        >>> f = x.arccos()
+        >>> print(f)
         value = 1.0471975511965976, derivative = -1.1547005383792517
         """
         
@@ -304,7 +316,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(2, 1)
-        >>> print(np.arctan(x))
+        >>> f = x.arctan()
+        >>> print(f)
         value = 1.1071487177940906, derivative = 0.2
         """
         
@@ -324,7 +337,8 @@ class Variable:
         EXAMPLES
         --------
         >>> x = Variable(2, 5)
-        >>> print(np.sinh(x))
+        >>> f = x.sinh()
+        >>> print(f)
         value = 3.6268604078470186, derivative = 18.81097845541816
         """
         
@@ -344,7 +358,8 @@ class Variable:
         EXAMPLES
         --------
         >>> x = Variable(6, 1)
-        >>> print(np.cosh(x))
+        >>> f = x.cosh()
+        >>> print(f)
         value = 201.7156361224559, derivative = 201.71315737027922
         """
         
@@ -364,7 +379,8 @@ class Variable:
         EXAMPLES
         --------
         >>> x = Variable(2, 1)
-        >>> print(np.tanh(x))
+        >>> f = x.tanh()
+        >>> print(f)
         value = 0.9640275800758169, derivative = 0.07065082485316447
         """
         
@@ -390,7 +406,8 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 2)
-        >>> print(np.exp(x))
+        >>> f = x.exp()
+        >>> print(f)
         value = 148.4131591025766, derivative = 296.8263182051532
         """
         
@@ -464,11 +481,11 @@ class Variable:
 
     def __add__(self, other):
         """
-        Method for adding 
+        Method for adding two quantities
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -480,13 +497,15 @@ class Variable:
         # addition of two Variable objects
         >>> x = Variable(5, 2)
         >>> y = Variable(4, 4)
-        >>> print(x + y)
+        >>> f = x + y
+        >>> print(f)
         value = 9, derivative = 6
         
         # addition of one Variable object and a real number
         >>> x = Variable(5, 1)
         >>> y = 10
-        >>> print(x + y)
+        >>> f = x + y
+        >>> print(f)
         value = 15, derivative = 1
         """
         
@@ -502,11 +521,11 @@ class Variable:
 
     def __sub__(self, other):
         """
-        Method for subtracting 
+        Method for subtracting one quantity from another
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -518,13 +537,15 @@ class Variable:
         # subtraction of two Variable objects
         >>> x = Variable(5, 6)
         >>> y = Variable(4, 4)
-        >>> print(x - y)
+        >>> f = x - y
+        >>> print(f)
         value = 1, derivative = 2
         
         # subtraction of one Variable object and a real number
         >>> x = Variable(5, 1)
         >>> y = 5
-        >>> print(x - y)
+        >>> f = x - y
+        >>> print(f)
         value = 0, derivative = 1
         """
 
@@ -540,11 +561,11 @@ class Variable:
 
     def __mul__(self, other):
         """
-        Method for multiplying 
+        Method for multiplying two quantities
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -556,13 +577,15 @@ class Variable:
         # multiplication of two Variable objects
         >>> x = Variable(5, 6)
         >>> y = Variable(4, 4)
-        >>> print(x * y)
+        >>> f = x * y
+        >>> print(f)
         value = 20, derivative = 44
         
         # multiplication of a Variable object and a real number
         >>> x = Variable(5, 6)
         >>> y = 10
-        >>> print(x * y)
+        >>> f = x * y
+        >>> print(f)
         value = 50, derivative = 60
         """
         
@@ -578,11 +601,11 @@ class Variable:
 
     def __truediv__(self, other):
         """
-        method for dividing one Variable object from another
+        method for division of two quantities
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -595,16 +618,16 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(5, 6)
         >>> y = Variable(5, 4)
-        >>> z = x / y
-        >>> print(z)
+        >>> f = x / y
+        >>> print(f)
         value = 1.0, derivative = 0.4
         
         # test division of a Variable object and a real number
         >>> import numpy as np
         >>> x = Variable(5, 6)
         >>> y = 5
-        >>> z = x / y
-        >>> print(z)
+        >>> f = x / y
+        >>> print(f)
         value = 1.0, derivative = 1.2
         """
         
@@ -622,10 +645,104 @@ class Variable:
             return Variable(new_val, new_der)
         
             
+            
+    def __pow__(self, other):
+        
+        """
+        Method for raising one quantity to the power of another
+
+        INPUTS
+        ------
+        other : a real number
+
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the value raised to the power specified and new derivative.
+            
+        EXAMPLES
+        --------
+        # Raising a Variable object to the power of an int
+        >>> x = Variable(5, 1)
+        >>> y = 2
+        >>> f = x ** y
+        >>> print(f)
+        value = 25, derivative = 10
+        
+        # Raising a Variable object to the power of a float
+        >>> x = Variable(5, 1)
+        >>> y = 2.5
+        >>> f = x ** y
+        >>> print(f)
+        value = 55.90169943749474, derivative = 27.95084971874737
+        """
+        
+        if isinstance(other, (int, float)):
+            new_val = np.power(self.val, other)
+            new_der = other*np.power(self.val, other-1)*self.der
+            return Variable(new_val.item(), new_der.item())
+        else: 
+            raise TypeError("Can only raise to the power of a real number!")
+    
+    def log (self):
+        """
+        Value and derivative computation of the log function (base e)
+        
+        INPUTS
+        ------
+        None
+        
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the value and derivative of the log function.
+            
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 1)
+        >>> f = x.log()
+        >>> print(f)
+        value = 1.6094379124341003, derivative = 0.2
+        """
+        
+        value = np.log(self.val)
+        derivative = (1/self.val)*self.der
+        return Variable(value, derivative)
+    
+    def sqrt (self):
+        """
+        Value and derivative computation of the square root function
+        
+        INPUTS
+        ------
+        None
+        
+        RETURNS
+        -------
+        A Variable object
+            This Variable object has the value and derivative of the square root function.
+            
+        EXAMPLES
+        --------
+        >>> import numpy as np
+        >>> x = Variable(5, 1)
+        >>> f = x.sqrt()
+        >>> print(f)
+        value = 2.23606797749979, derivative = 0.22360679774997896
+        """
+        errormsg = 'cannot calculate square root of negative numbers, or derivative where value is 0'\
+        ' because division by zero error'\
+        
+        if self.val <= 0 :
+            raise ValueError(errormsg)
+        value = np.sqrt(self.val)
+        derivative = .5*(1/np.sqrt(self.val))*self.der
+        return Variable(value, derivative)
     
     def __radd__(self, other):
         """
-        Method for performing addition 
+        Method for performing right side addition 
 
         INPUTS
         ------
@@ -640,14 +757,15 @@ class Variable:
         --------
         # addition of a Variable object and a number
         >>> x = Variable(2, 5)
-        >>> z = 3 + x
-        >>> print(z)
+        >>> f = 3 + x
+        >>> print(f)
         value = 5, derivative = 5
         
         # addition of two Variable objects
         >>> x = Variable(1, 2)
         >>> y = Variable(2 ,3)
-        >>> print(x + y)
+        >>> f = x + y
+        >>> print(f)
         value = 3, derivative = 5
         """
         
@@ -656,7 +774,7 @@ class Variable:
 
     def __rmul__(self, other):
         """
-        Method for performing multiplication 
+        Method for performing right side multiplication 
         
         INPUTS
         ----------
@@ -671,13 +789,15 @@ class Variable:
         # multiplication of two Variable objects
         >>> x = Variable(2, 3)
         >>> y = Variable(3, 4)
-        >>> print(x * y)
+        >>> f = x * y
+        >>> print(f)
         value = 6, derivative = 17
         
         # multiplication of a Variable object and a number 
         >>> x = Variable(5, 6)
         >>> y = 3
-        >>> print(y * x)
+        >>> f = x * y
+        >>> print(f)
         value = 15, derivative = 18
         """
         
@@ -686,11 +806,11 @@ class Variable:
     
     def __rsub__(self, other):
         """
-        Method for performing subtraction 
+        Method for performing right side subtraction 
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -701,13 +821,15 @@ class Variable:
         # subtraction of a Variable object and a real number
         >>> x = Variable(0)
         >>> y = 10
-        >>> print(y - x)
+        >>> f = y - x
+        >>> print(f)
         value = 10, derivative = -1
         
         # subtraction of two Variable objects
         >>> x = Variable(3, 5)
         >>> y = Variable(2, 3)
-        >>> print(y - x)
+        >>> f = y - x
+        >>> print(f)
         value = -1, derivative = -2
         """
         
@@ -717,11 +839,11 @@ class Variable:
 
     def __rtruediv__(self, other):
         """
-        Method for performing division
+        Method for performing right side division
 
         INPUTS
         ------
-        other : A Variable object
+        other : A Variable object or a real number
 
         RETURNS
         -------
@@ -732,19 +854,22 @@ class Variable:
         # division of two Variable objects
         >>> x = Variable(2, 3)
         >>> y = Variable(1, 2)
-        >>> print(y / x)
+        >>> f = y / x
+        >>> print(f)
         value = 0.5, derivative = 0.25
         
         # division of a Variable object and a number
         >>> x = Variable(2, 3)
         >>> y = 10
-        >>> print(y / x)
+        >>> f = y / x
+        >>> print(f)
         value = 5.0, derivative = -7.5
         
         # 0 divides a Variable object
         >>> y = 0
-        >>> x=Variable(1, 2)
-        >>> print(0 / x)
+        >>> x = Variable(1, 2)
+        >>> f = 0 / x
+        >>> print(f)
         value = 0.0, derivative = 0.0
         """
         
