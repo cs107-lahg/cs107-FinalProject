@@ -102,19 +102,15 @@ lagh_ad
 │   ├── README.md           README for docs
 │   └── milestone[x].md     Documentation for each milestone
 │
-│
-├── dev/                    Project planning/development
+├── dev/                    Project planning/development (optional)
 │
 ├── src/                    Package source files
-│   ├── AD.py               Main constructor
-│   ├── AD_helper.py        Helper functions
-│   ├── AD_forward.py       Forward mode
-│   └── AD_reverse.py       Reverse mode
+│   ├── fd.py               Main constructor for forward mode
+│   └── rv.py               Reverse mode (Future Implementation)
 │
 └── tests/                  Package test scripts
     ├── run_tests.py        script that runs all tests
-    └── test_[x].py         tests function [x]
-
+    └── test_[x].py         tests [x].py (currenly only 'fd')
 ```
 
 ### What modules do you plan on including? What is their basic functions.
@@ -181,7 +177,7 @@ The following methods, except ** init ** and ** str **, will return the function
 
 | **Class Methods** | **Usage** |
 
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 | \_\_init\_\_ | This method initializes a Variable object by initializing self.val and self.der variables. Specifically, self.val is set to the value passed into the function and self.der is set to 1 |
 
@@ -220,10 +216,9 @@ The following methods, except ** init ** and ** str **, will return the function
 | self.log | This method will return the log of an intermediate and its derivative |
 
 | self.sqrt | This method will return the square root of an intermediate and its derivative |
-
 | self.cross_product | This method will return the cross product of two vectors |
-
 | self.set_seed | This method will take in a vector p and set it as the seed vector |
+---------------------------------------------------------------------------------------
 
 To handle scalars and vectors as input, we will first check the length of our input to see if it is a vector or a scalar, then we will perform the specific operation for vector/scalar inputs. For vector functions of vectors, such as cross product, vectors will be passed into the function and the function will return a vector after an operation has been performed on them. Scalar functions of vectors, such as dot products, will take in vectors as input and return a scalar. Each of the functions listed above will handle both vectors and scalars as input.
 
