@@ -124,7 +124,7 @@ class Variable:
     
     def __neg__(self):
         """
-        Method for taking negative of a Variable object
+        Method for taking negative (-) of a Variable object
         
         INPUTS
         ------
@@ -242,7 +242,7 @@ class Variable:
         RAISES
         ------
         ValueError
-            When the input value is larger than 1 or samller than -1.
+            When the input value is larger than 1 or smaller than -1.
 
         RETURNS
         -------
@@ -417,7 +417,7 @@ class Variable:
     
     def __eq__(self, other):
         """
-        Method for checking if two Variable objects are equal
+        Method for checking if two Variable objects are equal, overloads ==
         
         INPUTS
         ------
@@ -451,7 +451,7 @@ class Variable:
     
     def __ne__(self, other):
         """
-        Method for checking if two Variable objects are not equal
+        Method for checking if two Variable objects are not equal, overloads !=
 
         INPUTS
         ------
@@ -481,7 +481,7 @@ class Variable:
 
     def __add__(self, other):
         """
-        Method for adding two quantities
+        Method for adding two quantities, overloads +
 
         INPUTS
         ------
@@ -521,7 +521,7 @@ class Variable:
 
     def __sub__(self, other):
         """
-        Method for subtracting one quantity from another
+        Method for subtracting one quantity from another, overloads -
 
         INPUTS
         ------
@@ -561,7 +561,7 @@ class Variable:
 
     def __mul__(self, other):
         """
-        Method for multiplying two quantities
+        Method for multiplying two quantities, overloads *
 
         INPUTS
         ------
@@ -601,7 +601,7 @@ class Variable:
 
     def __truediv__(self, other):
         """
-        method for division of two quantities
+        method for division of two quantities, overloads /
 
         INPUTS
         ------
@@ -649,11 +649,19 @@ class Variable:
     def __pow__(self, other):
         
         """
-        Method for raising one quantity to the power of another
+        Method for raising one quantity to the power of another, overloads **
 
         INPUTS
         ------
         other : a real number
+        
+        RAISES
+        ------
+        TypeError
+            When other is a non-real number input
+        ValueError
+            When trying to raise a negative number to a fraction of a power (ex. (-2)**.2)
+
 
         RETURNS
         -------
@@ -662,28 +670,39 @@ class Variable:
             
         EXAMPLES
         --------
-        # Raising a Variable object to the power of an int
+        # Raising a Variable object to the power of a positive int
         >>> x = Variable(5, 1)
         >>> y = 2
         >>> f = x ** y
         >>> print(f)
-        value = 25, derivative = 10
+        value = 25.0, derivative = 10.0
         
-        # Raising a Variable object to the power of a float
+        # Raising a Variable object to the power of a negative float
         >>> x = Variable(5, 1)
-        >>> y = 2.5
+        >>> y = -2.5
         >>> f = x ** y
         >>> print(f)
-        value = 55.90169943749474, derivative = 27.95084971874737
+        value = 0.01788854381999832, derivative = -0.00894427190999916
         """
         
-        if isinstance(other, (int, float)):
+        if self.val < 0 and isinstance(other, float) and (other - int(other) != 0):
+            raise ValueError("Cannot take the root of a negative number")
+        
+        if not(isinstance(other, (int, float)) or isinstance(other, Variable)):
+            raise TypeError("Can only raise to the power of a real number or variable!")
+            
+        try:
+            other1 = float(other.val)
+            new_val = np.power(self.val, other1)
+            new_der = np.log(self.val) * np.power(self.val, other1)*self.der
+            return Variable(new_val, new_der)
+        
+        except AttributeError:
+            other = float(other)
             new_val = np.power(self.val, other)
             new_der = other*np.power(self.val, other-1)*self.der
             return Variable(new_val.item(), new_der.item())
-        else: 
-            raise TypeError("Can only raise to the power of a real number!")
-    
+          
     def log (self):
         """
         Value and derivative computation of the log function (base e)
@@ -691,6 +710,12 @@ class Variable:
         INPUTS
         ------
         None
+        
+        RAISES
+        ------
+        ValueError
+            When the input value is less than or equal to 0
+
         
         RETURNS
         -------
@@ -705,7 +730,9 @@ class Variable:
         >>> print(f)
         value = 1.6094379124341003, derivative = 0.2
         """
-        
+        if self.val <= 0:
+            raise ValueError("Cannot take the log of 0 or a negative number")
+ 
         value = np.log(self.val)
         derivative = (1/self.val)*self.der
         return Variable(value, derivative)
@@ -954,4 +981,3 @@ def make_variable(var,der):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    

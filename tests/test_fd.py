@@ -84,6 +84,50 @@ def test_arctan():
     assert x.val == np.arctan(value)
     assert x.der == 1/(1 + value**2) * deriv_seed 
 
+def test_add():
+    assert (ad.Variable(1) + 1).val == 2
+    assert (ad.Variable(1) + 1).der == 1
+    assert (ad.Variable(1) + ad.Variable(1)).val == 1
+    assert (ad.Variable(1) + ad.Variable(1)).der == 1
+
+def test_sub():
+    assert (ad.Variable(1) - 1).val == 0
+    assert (ad.Variable(1) - 1).der == 1
+    assert (ad.Variable(1) - ad.Variable(1)).val == 0
+    assert (ad.Variable(1) - ad.Variable(1)).der == 0
+
+def test_mul():
+    assert (ad.Variable(1) * 2).val == 2
+    assert (ad.Variable(1) * 2).der == 2
+    assert (ad.Variable(1) * ad.Variable(2)).val == 2
+    assert (ad.Variable(1) * ad.Variable(2)).der == 3
+
+def test_pow():
+    assert (ad.Variable(1) ** 1).val == 1
+    assert (ad.Variable(1) ** 1).der == 1
+    with pytest.raises(ValueError):
+        ad.Variable(-1)**.2
+    with pytest.raises(TypeError):
+        ad.Variable(1)**"abc"
+def test_log():
+    assert ad.Variable(1).log().val == 0
+    assert ad.Variable(1).log().der == 1
+    with pytest.raises(ValueError):
+        ad.Variable(-1).log()
+    with pytest.raises(ValueError):
+        ad.Variable(0).log()
+
+def test_sqrt():
+    assert ad.Variable(1).sqrt().val == 1.0
+    assert ad.Variable(1).sqrt().der == .5
+    with pytest.raises(ValueError):
+        ad.Variable(-1).sqrt()
+    with pytest.raises(ValueError):
+        ad.Variable(0).sqrt()
+
+
+
+
 
 if __name__ == '__main__':
     test_arcsin_domain()
