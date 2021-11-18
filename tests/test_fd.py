@@ -27,19 +27,23 @@ def test_variable_types():
         assert ad.Variable('test')
         
 def test_make_variable():
-    # assert ad.make_variable(3, 5) == ad.Variable(3,5)
+    assert ad.make_variable(3, 5) == ad.Variable(3,5)
     assert ad.make_variable(3, 5).val == 3.0
     assert ad.make_variable(3, 5).der == 5.0
     
 def test_make_variables():
     v = ad.make_variables([5,6,7], [1,2,3])
-    # assert v[0] == ad.Variable(5,1)
-    # assert v[1] == ad.Variable(6,2)
-    # assert v[2] == ad.Variable(7,3)
+    with pytest.raises(ValueError):
+        make_variables([1, 2], [1, 0,1])
+    assert v[0] == ad.Variable(5,1)
+    assert v[1] == ad.Variable(6,2)
+    assert v[2] == ad.Variable(7,3)
     
-def test_cos():
-    assert ad.Variable(0).cos().val == 1.0
-    assert ad.Variable(0).cos().der == np.sin(0)
+def test_rmul():
+    assert (2 * ad.Variable(1)).val == 2
+    assert (2 * ad.Variable(1)).der == 2
+    assert (ad.Variable(2) * ad.Variable(1)).val == 2
+    assert (ad.Variable(2) * ad.Variable(1)).der == 3
 
 def test_sin():
     x = ad.Variable(0).sin()
@@ -87,6 +91,8 @@ def test_arctan():
 def test_add():
     assert (ad.Variable(1) + 1).val == 2
     assert (ad.Variable(1) + 1).der == 1
+    assert (1 + ad.Variable(1)).val == 2
+    assert (1 + ad.Variable(1)).der == 1
     assert (ad.Variable(1) + ad.Variable(1)).val == 1
     assert (ad.Variable(1) + ad.Variable(1)).der == 1
 
@@ -99,6 +105,8 @@ def test_sub():
 def test_mul():
     assert (ad.Variable(1) * 2).val == 2
     assert (ad.Variable(1) * 2).der == 2
+    assert (2 * ad.Variable(1)).val == 2
+    assert (2 * ad.Variable(1)).der == 2
     assert (ad.Variable(1) * ad.Variable(2)).val == 2
     assert (ad.Variable(1) * ad.Variable(2)).der == 3
 
@@ -125,9 +133,52 @@ def test_sqrt():
     with pytest.raises(ValueError):
         ad.Variable(0).sqrt()
 
+def test_tanh():
+    assert ad.Variable(0).tanh().val == 0.0
+    assert ad.Variable(1).tanh().val == pytest.approx(np.tanh(1))
+    assert ad.Variable(0).tanh().val == 1
+    assert ad.Variable(1).tanh().val == 1 - np.tanh(1)**2
 
+def test_truediv():
+    x = ad.Variable(0)
+    y = ad.Variable(2)
+    with pytest.raises(ZeroDivisionError):
+        y/x
+    with pytest.raises(ZeroDivisionError):
+        y/0
+        
+    z1 = x/y
+    assert z1.val == 0
+    assert z1.der == (y.val*x.der - x.val*y.der)/(y.val**2)
+    
+    z2 = 0/y
+    assert z2.val == 0
+    assert z2.der == (y.val*0 - 0*y.der)/(y.val**2)
+    
+    x = ad.Variable(1,5)
+    y = ad.Variable(5,2)
+        
+    z1 = x/y
+    assert z1.val == 1/5
+    assert z1.der == (y.val*x.der - x.val*y.der)/(y.val**2)
+    
+    z2 = y/x
+    assert z2.val == 5
+    assert z2.der == pytest.approx((x.val*y.der - y.val*x.der)/(x.val**2))
+    
+    z3 = 3/x 
+    assert z3.val == 3.0
+    assert z3.der == (-3*x.der)/(x.val**2)
+    
+    z4 = x/3 
+    assert z4.val == 1/3
+    assert z4.der == x.der/3
 
-
+def test_radd():
+    assert (1+ ad.Variable(1)).val == 2
+    assert (1+ ad.Variable(1)).der == 1
+    assert (ad.Variable(2) + ad.Variable(1)).val == 3
+    assert (ad.Variable(2) + ad.Variable(1)).der == 1
 
 if __name__ == '__main__':
     test_arcsin_domain()
