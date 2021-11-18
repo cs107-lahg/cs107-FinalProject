@@ -2,8 +2,6 @@ import pytest
 import os
 import sys
 
-# from lahg_ad.fd import Variable
-
 os.chdir(sys.path[0])
 sys.path.append('../')
 import lahg_ad as ad
