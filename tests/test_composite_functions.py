@@ -17,7 +17,7 @@ def test_sincosmul_function():
     
 def test_comp2():
     x = ad.Variable(3, 5)
-    f = (x * 2) ** 3 + 5
+    f = (x * 2) ** 3.0 + 5
     assert f.get_value() == 221
     assert f.get_derivative() == 1080
     
@@ -27,7 +27,15 @@ def test_comp3():
     assert f.get_value() == (2 / 3 + 2) * 5
     assert f.get_derivative() == pytest.approx(5/3 * 1)
 
+def test_comp4():
+    x = ad.Variable(3,1)
+    f = x.log()
+    f = x.log()**1.2 / np.exp(x)
+    assert f.get_value() == 0.05573524279782748
+    assert f.get_derivative() == -0.03544228107776609
+
 if __name__ == '__main__':
     test_comp2()
     test_comp3()
+    test_comp4()
     test_sincosmul_function()

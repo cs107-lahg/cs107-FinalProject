@@ -65,7 +65,7 @@ pip install -r requirements.txt
 
 #### Initiate and use our Variable object
 
-Then users can import the package and all modules included using the command:
+Then, while in the root directory of the folder, users can import the package and all modules included using the command:
 
 ```python
 
@@ -73,17 +73,15 @@ import lagh_ad as ad
 
 ```
 
-To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example
+To make use of automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example the following script shows how to compute $f(x) = \sqrt{2x + \sin(x) + 1 - \cos(x)}$
 
 ```python
 
-x = ad.make_variable(2,1)
-
-y = ad.make_variable(0,1)
-
-f = (x * y + np.sin(x) + 1 - np.cos(y))**0.5
-
-print(f)
+>>> x = ad.make_variable(2,1)
+>>> f = (2*x + x.sin() + 1 - x.cos())**0.5
+>>> 
+>>> print(f)
+value = 2.5150435907500337, derivative = 0.4956475902540986
 
 ```
 
@@ -110,7 +108,7 @@ lagh_ad
 │
 └── tests/                  Package test scripts
     ├── run_tests.py        script that runs all tests
-    └── test_[x].py         tests [x].py (currenly only 'fd')
+    └── test_[x].py         tests [x].py
 ```
 
 ### What modules do you plan on including? What is their basic functions.
@@ -127,11 +125,13 @@ The modules we included are
 
 - Our test suite lives in the `tests/` directory. We have a python script test_fd.py where all our test functions for the forward mode implemention lives. In the future, we will implement a test_rv.py python script where the test functions for the reverse mode implemention will live. run_tests.py will be a script that runs the tests in both test_fd.py and test_rv.py.
 
-- Travis CI and CodeCov are used to test our package and check code coverage after every commit that changes src/ files.
+- Travis CI and CodeCov are used to test our package and check code coverage after every commit that changes lahg_ad/ files.
 
 - The Travis CI system syncs with our package on GitHub. The system clones the GitHub repository to a build environment, which is an isolated virtual machine. The system then processes the `.travis.yml` config file and reports the build results back to our `README.md` file on GitHub. The build environment gets terminated once the build is completed.
 
-- CodeCov syncs with our package on GitHub. The system runs the tests in `test_fd.py` and generates code coverage reports. The final code coverage is reported back as a percentage to our `README.md` file, reflecting how much code our test suite covers.
+- CodeCov syncs with our package on GitHub. The system runs the tests in `test_fd.py` and `test_composite_functions.py` and generates code coverage reports. The final code coverage is reported back as a percentage to our `README.md` file, reflecting how much code our test suite covers.
+
+- Note: We are on a free trial of TravisCI which will work for this milestone, however we will explore other CI (such as CirclesCI) for the final milestone and futureproofing our package when our trial period is over.
 
 ### How can someone install your package?
 
@@ -153,7 +153,7 @@ The modules we included are
 
 - We did not use a framework for our software because it is simple enough to not use a framework -- a framework will overcomplicate the design.
 
-- We will use `setup_tools` library to help us with package development.
+- We will use `setup_tools` library to help us with package development (not yet implemented fully).
 
 ### Other considerations
 
@@ -226,6 +226,8 @@ Descriptions of the implementation of our elementary functions are found in the 
 
 ## Future Features
 
-In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector function. In order to do that, we will include a new module called Jacobian.
+In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector function. In order to do that, we will include a new module called Jacobian. The package functions will change since we will have to now have to have a vector of values and a vector of derivatives and also support vector-valued operations. We will implement this by leveraging our current scalar-valued implentation.
 
-We will also include a new module that implements the automatic differentiation reverse mode. The primary challenge would be the process of storing a whole computation graph described in the Background section.
+We do not expect our folder structure to change very much, all our package-related functions will live in `lahg_ad` and become part of our main package, and we will test our code the same way.
+
+We will also include a new module that implements the automatic differentiation reverse mode. The primary challenge would be the process of storing a whole computation graph described in the Background section. We will have to think about how to best store this computational graph, and how to best represent this to the user.
