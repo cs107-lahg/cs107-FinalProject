@@ -135,9 +135,9 @@ def test_sqrt():
 
 def test_tanh():
     assert ad.Variable(0).tanh().val == 0.0
-    assert ad.Variable(0).tanh().val == 1.0
+    assert ad.Variable(0).tanh().der == 1
     assert ad.Variable(1).tanh().val == np.tanh(1)
-    assert ad.Variable(1).tanh().val == 1 - np.tanh(1)**2
+    assert ad.Variable(1).tanh().der == pytest.approx(1 - np.tanh(1)**2)
 
 def test_truediv():
     x = ad.Variable(0)
@@ -208,3 +208,4 @@ if __name__ == '__main__':
     test_arctan()
     test_arccos()
     test_arcsin()
+    test_tanh()
