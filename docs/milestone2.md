@@ -102,19 +102,15 @@ lagh_ad
 │   ├── README.md           README for docs
 │   └── milestone[x].md     Documentation for each milestone
 │
-│
-├── dev/                    Project planning/development
+├── dev/                    Project planning/development (optional)
 │
 ├── src/                    Package source files
-│   ├── AD.py               Main constructor
-│   ├── AD_helper.py        Helper functions
-│   ├── AD_forward.py       Forward mode
-│   └── AD_reverse.py       Reverse mode
+│   ├── fd.py               Main constructor for forward mode
+│   └── rv.py               Reverse mode (Future Implementation)
 │
 └── tests/                  Package test scripts
     ├── run_tests.py        script that runs all tests
-    └── test_fd.py          tests functions
-
+    └── test_[x].py         tests [x].py (currenly only 'fd')
 ```
 
 ### What modules do you plan on including? What is their basic functions.
