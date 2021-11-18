@@ -178,7 +178,7 @@ def test_truediv():
     
     z2 = 0/y
     assert z2.val == 0
-    assert z2.der == (y.val*0 - 0*y.der)/(y.val**2)
+    assert z2.der == 0
     
     x = ad.Variable(1,5)
     y = ad.Variable(5,2)
