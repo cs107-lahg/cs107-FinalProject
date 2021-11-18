@@ -56,13 +56,13 @@ def test_rmul():
 
 def test_sin():
     x = ad.Variable(0).sin()
-    assert x.val == 0
-    assert x.der == np.cos(0)
+    assert x.val == 0.0
+    assert x.der == 1.0
     
 def test_cos():
     x = ad.Variable(0).cos()
-    assert x.val == 1
-    assert x.der == -np.sin(0)
+    assert x.val == 1.0
+    assert x.der == 0.0
 
 def test_cosh():
     assert ad.Variable(1).cosh().val == 1.5430806348152437
