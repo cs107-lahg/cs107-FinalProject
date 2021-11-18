@@ -228,4 +228,4 @@ Descriptions of the implementation of our elementary functions are found in the 
 
 In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector function. In order to do that, we will include a new module called Jacobian.
 
-We will also include a new module that implements the automatic differentiation reverse mode. The primary challenge would be the process of storing a whole computation graph described in mthe Background section.
+We will also include a new module that implements the automatic differentiation reverse mode. The primary challenge would be the process of storing a whole computation graph described in the Background section.
