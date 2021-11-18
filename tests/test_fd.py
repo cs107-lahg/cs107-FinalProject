@@ -23,7 +23,7 @@ def test_ne():
     assert ad.Variable(1, 2) != 1
 
 def test_repr():
-    assert print(ad.Variable(1)) == "value = 1, derivative = 1"
+    assert ad.Variable(1).__repr__() == "value = 1, derivative = 1"
     
 def test_get_value():
     x = ad.Variable(1.03)
@@ -63,7 +63,7 @@ def test_sin():
     
 def test_cos():
     x = ad.Variable(0).cos()
-    assert x.val == 0
+    assert x.val == 1
     assert x.der == -np.sin(0)
 
 def test_cosh():
@@ -238,3 +238,6 @@ if __name__ == '__main__':
     test_tanh()
     test_cosh()
     test_sinh()
+    test_cos()
+    test_sin()
+    test_repr()
