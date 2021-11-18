@@ -675,7 +675,7 @@ class Variable:
         >>> y = 2
         >>> f = x ** y
         >>> print(f)
-        value = 25.0, derivative = 10.0
+        value = 25, derivative = 10
         
         # Raising a Variable object to the power of a negative float
         >>> x = Variable(5, 1)
@@ -685,23 +685,53 @@ class Variable:
         value = 0.01788854381999832, derivative = -0.00894427190999916
         """
         
-        if self.val < 0 and isinstance(other, float) and (other - int(other) != 0):
-            raise ValueError("Cannot take the root of a negative number")
-        
+          
         if not(isinstance(other, (int, float)) or isinstance(other, Variable)):
             raise TypeError("Can only raise to the power of a real number or variable!")
+        
             
         try:
-            other1 = float(other.val)
-            new_val = np.power(self.val, other1)
-            new_der = np.log(self.val) * np.power(self.val, other1)*self.der
-            return Variable(new_val, new_der)
-        
+            value = self.val ** other.val
+            if self.val <= 0:
+                derivative = other.val * self.val ** (other.val - 1) * self.der
+            else:
+                derivative = other.val * self.val ** (other.val - 1) * self.der + np.log(
+                    self.val) * self.val ** other.val * other.der
+            return Variable(value, derivative)
+                    
         except AttributeError:
-            other = float(other)
-            new_val = np.power(self.val, other)
-            new_der = other*np.power(self.val, other-1)*self.der
-            return Variable(new_val.item(), new_der.item())
+            if self.val <= 0 and other > 0 and other < 1:
+                raise ValueError("Cannot take derivative of the root of a non-positive number")
+            
+            if self.val == 0 and other < 0:
+                raise  ValueError("Cannot raise the negative power of 0")
+            
+            value = self.val ** other
+            derivative = other * self.val ** (other - 1) * self.der
+            return Variable(value, derivative)
+
+    def __rpow__(self, other):
+        """
+        Method for performing reverse power, e.g. 3 ** x
+
+        INPUTS
+        ----------
+        other : A int or float
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(5, 1)
+        >>> print(3 ** x)
+        value = 243, derivative = 266.96278614635065
+        """
+        
+        value = other ** self.val
+        derivative = np.log(other) * other ** self.val * self.der
+        return Variable(value, derivative)
           
     def log (self):
         """
@@ -731,7 +761,7 @@ class Variable:
         value = 1.6094379124341003, derivative = 0.2
         """
         if self.val <= 0:
-            raise ValueError("Cannot take the log of 0 or a negative number")
+            raise ValueError("Cannot take the log of a non-positive number")
  
         value = np.log(self.val)
         derivative = (1/self.val)*self.der
@@ -758,14 +788,7 @@ class Variable:
         >>> print(f)
         value = 2.23606797749979, derivative = 0.22360679774997896
         """
-        errormsg = 'cannot calculate square root of negative numbers, or derivative where value is 0'\
-        ' because division by zero error'\
-        
-        if self.val <= 0 :
-            raise ValueError(errormsg)
-        value = np.sqrt(self.val)
-        derivative = .5*(1/np.sqrt(self.val))*self.der
-        return Variable(value, derivative)
+        return self.__pow__(0.5)
     
     def __radd__(self, other):
         """
