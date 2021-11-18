@@ -700,7 +700,7 @@ class Variable:
             return Variable(value, derivative)
                     
         except AttributeError:
-            if self.val <= 0 and other > 0 and other < 1:
+            if (self.val <= 0) and ((other - int(other)) != 0):
                 raise ValueError("Cannot take derivative of the root of a non-positive number")
             
             if self.val == 0 and other < 0:
