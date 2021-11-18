@@ -14,6 +14,17 @@ def test_Variable():
     assert ad_var.val == 0
     assert ad_var.der == 1
     
+def test_eq():
+    assert ad.Variable(1, 2) == ad.make_variable(1, 2)
+    assert (ad.Variable(1, 2) == 1) == False
+
+def test_ne():
+    assert ad.Variable(1, 2) != ad.Variable(2, 3)
+    assert ad.Variable(1, 2) != 1
+
+def test_repr():
+    assert ad.Variable(1).__repr__() == "value = 1, derivative = 1"
+    
 def test_get_value():
     x = ad.Variable(1.03)
     assert x.get_value() == 1.03
@@ -50,6 +61,19 @@ def test_sin():
     assert x.val == 0
     assert x.der == np.cos(0)
     
+def test_cos():
+    x = ad.Variable(0).cos()
+    assert x.val == 1
+    assert x.der == -np.sin(0)
+
+def test_cosh():
+    assert ad.Variable(1).cosh().val == 1.5430806348152437
+    assert ad.Variable(1).cosh().der == 1.1752011936438014
+    
+def test_sinh():
+    assert ad.Variable(1).sinh().val == 1.1752011936438014
+    assert ad.Variable(1).sinh().der == 1.5430806348152437
+
 def test_arcsin_domain():
     with pytest.raises(ValueError):
         ad.Variable(1).arcsin()
@@ -117,6 +141,7 @@ def test_pow():
         ad.Variable(-1)**.2
     with pytest.raises(TypeError):
         ad.Variable(1)**"abc"
+        
 def test_log():
     assert ad.Variable(1).log().val == 0
     assert ad.Variable(1).log().der == 1
@@ -146,6 +171,8 @@ def test_truediv():
         y/x
     with pytest.raises(ZeroDivisionError):
         y/0
+    with pytest.raises(ZeroDivisionError):
+        1/x
         
     z1 = x/y
     assert z1.val == 0
@@ -166,9 +193,9 @@ def test_truediv():
     assert z2.val == 5
     assert z2.der == pytest.approx((x.val*y.der - y.val*x.der)/(x.val**2))
     
-    z3 = 3/x 
-    assert z3.val == 3.0
-    assert z3.der == (-3*x.der)/(x.val**2)
+    z3 = 3/x
+    assert (3/x).val == 3.0
+    assert (3/x).der == (-3*x.der)/(x.val**2)
     
     z4 = x/3 
     assert z4.val == 1/3
@@ -209,3 +236,8 @@ if __name__ == '__main__':
     test_arccos()
     test_arcsin()
     test_tanh()
+    test_cosh()
+    test_sinh()
+    test_cos()
+    test_sin()
+    test_repr()
