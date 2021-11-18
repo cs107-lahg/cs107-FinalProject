@@ -41,7 +41,7 @@ If there are multiple input variables, then each intermediate variable can have 
 
 #### Install Python and Git
 
-To use our package, you will need to install up-to-date version of Python and Git. You can download Python 3.10.0 [here](https://www.python.org/downloads/) and Git 2.0.1 [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+To use our package, you will need to install up-to-date version of Python and Git. You can download Python 3.6.15 [here](https://www.python.org/downloads/) and Git 2.0.1 [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 #### Clone our repository
 
@@ -247,15 +247,15 @@ The class methods for our Forward Mode Implementation are described below.
 
 | self.cross_product | This method will return the cross product of two vectors. We will be implementing this method in the next milestone of the project |
 
-| self.set_seed | This method will take in a vector p and set it as the seed vector. We will be implementing this method in the next milestone of the project |
-
 ### Future implementation
 
-We have yet to implement self.cross_product and self.set_seed. We will also need to implement support for multiple functions of multiple input. Currently, our package can only calculate derivatives of a scalar function of a scalar. We also need to adjust our functions for them to be able to calculate derivatives of a vector function of a vector.
+We have yet to implement self.cross_product. We will also need to implement support for multiple functions of multiple input. Currently, our package can only calculate derivatives of a scalar function of a scalar. We also need to adjust our functions for them to be able to calculate derivatives of a vector function of a vector.
 
 ### External dependencies
 
 For external dependencies, we relied on numpy for our elementary operations. We also used setuptools to set up our package facilitate easy installation and distribution.
+
+To test our code, we also relied on pytest, pytest-cov and coverage.
 
 ### Elementary functions
 
