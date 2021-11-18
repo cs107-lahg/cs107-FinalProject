@@ -34,7 +34,7 @@ def test_make_variable():
 def test_make_variables():
     v = ad.make_variables([5,6,7], [1,2,3])
     with pytest.raises(ValueError):
-        make_variables([1, 2], [1, 0,1])
+        ad.make_variables([1, 2], [1, 0,1])
     assert v[0] == ad.Variable(5,1)
     assert v[1] == ad.Variable(6,2)
     assert v[2] == ad.Variable(7,3)
@@ -93,8 +93,8 @@ def test_add():
     assert (ad.Variable(1) + 1).der == 1
     assert (1 + ad.Variable(1)).val == 2
     assert (1 + ad.Variable(1)).der == 1
-    assert (ad.Variable(1) + ad.Variable(1)).val == 1
-    assert (ad.Variable(1) + ad.Variable(1)).der == 1
+    assert (ad.Variable(1) + ad.Variable(1)).val == 2
+    assert (ad.Variable(1) + ad.Variable(1)).der == 2
 
 def test_sub():
     assert (ad.Variable(1) - 1).val == 0
@@ -135,8 +135,8 @@ def test_sqrt():
 
 def test_tanh():
     assert ad.Variable(0).tanh().val == 0.0
-    assert ad.Variable(1).tanh().val == pytest.approx(np.tanh(1))
-    assert ad.Variable(0).tanh().val == 1
+    assert ad.Variable(0).tanh().val == 1.0
+    assert ad.Variable(1).tanh().val == np.tanh(1)
     assert ad.Variable(1).tanh().val == 1 - np.tanh(1)**2
 
 def test_truediv():
@@ -173,12 +173,30 @@ def test_truediv():
     z4 = x/3 
     assert z4.val == 1/3
     assert z4.der == x.der/3
+    
+def test_pow():
+    assert (ad.Variable(2, 1) ** 2).val == 2 ** 2
+    assert (ad.Variable(2, 1) ** 2).der == 2 * 2 * 1
+    with pytest.raises(ValueError):
+        ad.Variable(-1) ** 0.2
+    with pytest.raises(TypeError):
+        ad.Variable(1)** "abc"
+    assert (3 ** ad.Variable(2, 2)).val == 3 ** 2
+    assert (3 ** ad.Variable(2, 2)).der == np.log(3) * 3 ** 2 * 2
+    with pytest.raises(ValueError):
+        ad.Variable(0) ** (-2)
+    x = ad.Variable(2, 1)
+    y = ad.Variable(3, 0)
+    assert (x ** y).val == 2 ** 3
+    assert (x ** y).der == 3 * 2 ** (3 - 1) * 1 + np.log(2) * 2 ** 3 * 0
+    assert (y ** x).val == 3 ** 2
+    assert (y ** x).der == 2 * 3 ** (2 - 1) * 0 + np.log(3) * 3 ** 2 * 1
 
-def test_radd():
-    assert (1+ ad.Variable(1)).val == 2
-    assert (1+ ad.Variable(1)).der == 1
-    assert (ad.Variable(2) + ad.Variable(1)).val == 3
-    assert (ad.Variable(2) + ad.Variable(1)).der == 1
+def test_rsub():
+    assert (1 - ad.Variable(1)).val == 0
+    assert (1 - ad.Variable(1)).der == -1
+    assert (ad.Variable(2) - ad.Variable(1)).val == 1
+    assert (ad.Variable(2) - ad.Variable(1)).der == 0
 
 if __name__ == '__main__':
     test_arcsin_domain()
