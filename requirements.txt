@@ -1,1 +1,4 @@
 numpy~=1.19
+pytest
+pytest-cov
+coverage
