@@ -79,7 +79,7 @@ To make use of automatic differentiation function, users will need to initiate A
 
 >>> x = ad.make_variable(2,1)
 >>> f = (2*x + x.sin() + 1 - x.cos())**0.5
->>> 
+>>>
 >>> print(f)
 value = 2.5150435907500337, derivative = 0.4956475902540986
 
@@ -226,8 +226,14 @@ Descriptions of the implementation of our elementary functions are found in the 
 
 ## Future Features
 
-In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector function. In order to do that, we will include a new module called Jacobian. The package functions will change since we will have to now have to have a vector of values and a vector of derivatives and also support vector-valued operations. We will implement this by leveraging our current scalar-valued implentation.
+In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector functions. In order to do that, we will include a new module called Jacobian. The package functions will change since we will have to now have to have a vector of values and a vector of derivatives and also support vector-valued operations. We will implement this by leveraging our current scalar-valued implentation.
 
 We do not expect our folder structure to change very much, all our package-related functions will live in `lahg_ad` and become part of our main package, and we will test our code the same way.
 
-We will also include a new module that implements the automatic differentiation reverse mode. The primary challenge would be the process of storing a whole computation graph described in the Background section. We will have to think about how to best store this computational graph, and how to best represent this to the user.
+We will also include a new module that implements reverse-mode automatic differentiation. The primary challenge would be the process of storing a whole computation graph described in the Background section. We will have to think about how to best store this computational graph, and how to best represent this to the user.
+
+By traversing the computational graph backwards, reverse mode recovers the partial derivatives of the $i$th output $f_i$ with respect to the n variables $v_{j-m}$ with $j = 1,2,3,...,n$. Reverse mode computes the sensitivity of $f$ with respect to the independent and intermediate variables $v_{j-m}$. There are two passes in reverse mode: forward pass and reverse pass.
+
+The forward pass computes the partial derivative using the elementary functions, but does not use the chain rule. We do not need to apply the chain rule because this will be "built up" in the reverse pass. The reverse pass reconstructs the chain rule that was ignored in the forward pass. We will initialize $\bar{v}_i = 0$ then iterate over the children $j$ of node $i$, updating the values with $\bar{v}_i = \bar{v}_i + \frac{df}{dv_j} \frac{dv_j}{dv_i} = \bar{v}_i + \bar{v}_j \frac{dv_j}{dv_i}$. After we've iterated over all the children nodes for node $i$, we can update the parent nodes.
+
+With this in mind, we plan to build a graph of nodes starting with our x and/or y inputs. Starting with the forward pass, x and/or y will become the root of our graph. As we build our expression, we would create a child node on our graph for each operation we perform. This would allow us to easily perform a reverse pass as we've created a parent-child relationship between the nodes. The gradient computations will be saved in our nodes and we would be able to use those weights in the reverse pass.
