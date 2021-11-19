@@ -131,7 +131,12 @@ The modules we included are
 
 - CodeCov syncs with our package on GitHub. The system runs the tests in `test_fd.py` and `test_composite_functions.py` and generates code coverage reports. The final code coverage is reported back as a percentage to our `README.md` file, reflecting how much code our test suite covers.
 
-- Note: We are on a free trial of TravisCI which will work for this milestone, however we will explore other CI (such as CirclesCI) for the final milestone and futureproofing our package when our trial period is over.
+- Note: We are on a free trial of TravisCI which will work for this milestone, however we will explore other CI (such as CirclesCI) for the final milestone and futureproofing our package when our trial period is over. To run out tests locally you can run the following line in the terminal. This saves the coverage report to a folder `cov_report`.
+
+```{}
+pytest --cov=./ --cov-report html:cov_report
+```
+
 
 ### How can someone install your package?
 
