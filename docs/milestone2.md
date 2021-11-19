@@ -102,6 +102,8 @@ lagh_ad
 │
 ├── dev/                    Project planning/development (optional)
 │
+├── cov_report/             Contains local code coverage report
+│
 ├── src/                    Package source files
 │   ├── fd.py               Main constructor for forward mode
 │   └── rv.py               Reverse mode (Future Implementation)
