@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 class RD:
    
@@ -447,7 +446,7 @@ class RD:
         """
         self.val = self.val.astype(float)
         if isinstance(other, (float, int)):
-            if (other - math.floor(other) != 0) and any(self.val <= 0):
+            if (other - np.floor(other) != 0) and any(self.val <= 0):
                 raise Exception("Cannot take derivative of the root of a non-positive number")
             if any(self.val == 0) and other < 0:
                 raise Exception("Cannot raise the negative power of 0")
@@ -687,7 +686,7 @@ class RD:
             return True
         
         
-    def exp(self):
+    def exp(self, base = None):
         """
         Method to perform exponential operation for RD objects.
 
@@ -701,11 +700,21 @@ class RD:
         >>> f = x.exp()
         >>> x.get_derivative()
         array([ 2.71828183,  7.3890561 , 20.08553692])
+        
+        >>> x = RD(np.array([1,2,3]))
+        >>> f = x.exp(2)
+        >>> x.get_derivative()
+        array([1.38629436, 2.77258872, 5.54517744])
         """
-        child = RD(np.exp(self.val))
-        self.children.append((np.exp(self.val), child))
-        self.grad = None
-        return child
+        if base == None:
+            child = RD(np.exp(self.val))
+            self.children.append((np.exp(self.val), child))
+            self.grad = None
+            return child
+        elif isinstance(base, (int, float)):
+            return self.__rpow__(base)
+        else:
+            raise Exception("Exponential base must be int or float !")
     
     
     def sinh(self):
@@ -841,7 +850,7 @@ class RD:
         if isinstance(other, (float, int)):
             if other == 0 and any(self.val < 0):
                 raise Exception("Cannot raise the negative power of 0")
-            if other < 0 and any(self.val - math.floor(self.val) != 0):
+            if other < 0 and any(self.val - np.floor(self.val) != 0):
                 raise Exception("Cannot take derivative of the root of a non-positive number")
             child = RD(other ** self.val)
             self.children.append(((other ** self.val) * np.log(other), child))
@@ -934,7 +943,32 @@ class RD:
         if any(self.val == 0):
                 raise Exception("Cannot divide by 0")
         return other * (self ** (-1))
+    
+    
+    def logistic(self):
+        """
+        Method to perform logistic operation for RD objects
 
+        Returns
+        -------
+        child : RD object
+        
+        EXAMPLES
+        --------
+        >>> x = RD(np.array([1, 2, 3]))
+        >>> f = x.logistic()
+        >>> x.get_derivative()
+        array([0.19661193, 0.10499359, 0.04517666])
+        
+        >>> x = RD(np.array([2]))
+        >>> f = x.logistic()
+        >>> x.get_derivative()
+        array([0.10499359])
+        """
+        child = RD(1 / (1 + np.exp(-self.val)))
+        self.children.append((np.exp(-self.val) / ((1 + np.exp(-self.val)) ** 2), child)) 
+        self.grad = None
+        return child
         
 
 if __name__ == "__main__":
