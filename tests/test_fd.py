@@ -15,6 +15,14 @@ def test_Variable():
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)
     assert (ad.Variable(1, 2) == 1) == False
+    # x = ad.Variable(np.array([2, 1]), 3)
+    # print(x)
+    # y = ad.make_variable(np.array([2, 1]), 3)
+    # print(y)
+    assert(ad.Variable(np.array([2, 1]), 3).get_derivative == ad.make_variable(np.array([2, 1]), 3).get_derivative)
+    # print(ad.Variable(np.array([2, 1]), 3).get_derivative == ad.make_variable(np.array([2, 1]), 3).get_derivative)
+    # print(ad.make_variable(np.array([2, 1]), 3))
+    assert (ad.Variable(np.array([2, 1]), 3) == ad.make_variable(np.array([2, 1]), 3))
 
 def test_ne():
     assert ad.Variable(1, 2) != ad.Variable(2, 3)

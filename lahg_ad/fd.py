@@ -46,11 +46,30 @@ class Variable:
         >>> print(x)
         value = 2, derivative = 1
         """
-        
-        if isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
-            self.val = value
-            self.der = derivative_seed
-        else: 
+
+        if isinstance(value, np.ndarray) or isinstance(derivative_seed, np.ndarray):
+            try:
+                if isinstance(value, np.ndarray):
+                    # print(value, "value is np array")
+                    value.astype(float)
+                if isinstance(derivative_seed, np.ndarray):
+                    derivative_seed.astype(float)
+                    # print(derivative_seed, "der is np array")
+                # print(type(value))
+                # print(type(derivative_seed))
+                self.val = value
+                self.der = derivative_seed
+            except TypeError:
+                print("Not all elements in the value numpy array are int or float")
+                raise
+        elif isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
+            try:
+                self.val = value
+                self.der = derivative_seed
+            except TypeError:
+                print("Type of value and derivative seed must be int or float!")
+                raise
+        else:
             raise TypeError("Type of value and derivative seed must be int or float!")
     
     
@@ -94,6 +113,9 @@ class Variable:
         >>> x = Variable(2, 1)
         >>> print(x.get_value())
         2
+        >>> x = Variable(np.array([2, 1]), 3)
+        >>> print(x.get_value())
+        [2.  1.]
         """
         
         return self.val
@@ -117,6 +139,9 @@ class Variable:
         >>> x = Variable(2, 1)
         >>> print(x.get_derivative())
         1
+        >>> x = Variable(3, np.array([2, 1]))
+        >>> print(x.get_derivative())
+        [2.  1.]
 
         """
         return self.der
@@ -441,6 +466,8 @@ class Variable:
         False
         """
         try:
+            # print(self.val == other.val)
+            # print(self.der == other.der)
             if (self.val == other.val) and (self.der == other.der):
                 return True
             else:
