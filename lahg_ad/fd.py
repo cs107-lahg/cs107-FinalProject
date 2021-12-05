@@ -46,11 +46,26 @@ class Variable:
         >>> print(x)
         value = 2, derivative = 1
         """
-        
-        if isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
-            self.val = value
-            self.der = derivative_seed
-        else: 
+
+        if isinstance(value, np.ndarray) or isinstance(derivative_seed, np.ndarray):
+            try:
+                if isinstance(value, np.ndarray):
+                    # Check to see whether value can be converted to float
+                    value.astype(float)
+                if isinstance(derivative_seed, np.ndarray):
+                    # Check to see whether derivative can be converted to float
+                    derivative_seed.astype(float)
+                self.val = value
+                self.der = derivative_seed
+            except ValueError:
+                raise ValueError("Not all elements in the value numpy array are int or float")
+        elif isinstance(value, (int, float)) and isinstance(derivative_seed, (int, float)):
+            try:
+                self.val = value
+                self.der = derivative_seed
+            except TypeError:
+                raise TypeError("Type of value and derivative seed must be int or float!")  
+        else:
             raise TypeError("Type of value and derivative seed must be int or float!")
     
     
@@ -94,6 +109,9 @@ class Variable:
         >>> x = Variable(2, 1)
         >>> print(x.get_value())
         2
+        >>> x = Variable(np.array([2, 1]), 3)
+        >>> print(x.get_value())
+        [2.  1.]
         """
         
         return self.val
@@ -117,6 +135,9 @@ class Variable:
         >>> x = Variable(2, 1)
         >>> print(x.get_derivative())
         1
+        >>> x = Variable(3, np.array([2, 1]))
+        >>> print(x.get_derivative())
+        [2.  1.]
 
         """
         return self.der
@@ -441,7 +462,31 @@ class Variable:
         False
         """
         try:
-            if (self.val == other.val) and (self.der == other.der):
+            val_equal = False
+            der_equal = False
+
+            if isinstance(self.val, np.ndarray) or isinstance(other.val, np.ndarray):
+                if np.array_equal(self.val, other.val):
+                    val_equal = True
+                else:
+                    return False
+            else:
+                if self.val == other.val:
+                    val_equal = True
+                else:
+                    return False
+            if isinstance(self.der, np.ndarray) or isinstance(other.der, np.ndarray):
+                if np.array_equal(self.der, other.der):
+                    der_equal = True
+                else:
+                    return False
+            else:
+                if self.der == other.der:
+                    der_equal = True
+                else:
+                    return False
+
+            if val_equal and der_equal:
                 return True
             else:
                 return False
