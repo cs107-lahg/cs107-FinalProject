@@ -11,18 +11,16 @@ def test_Variable():
     ad_var = ad.Variable(0)
     assert ad_var.val == 0
     assert ad_var.der == 1
-    
+
+    ad_var_2 = ad.Variable(np.array([2, 1]), np.array([3, 4]))
+    assert np.array_equal(ad_var_2.val, np.array([2, 1]))
+    assert np.array_equal(ad_var_2.der, np.array([3, 4]))
+
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)
     assert (ad.Variable(1, 2) == 1) == False
-    # x = ad.Variable(np.array([2, 1]), 3)
-    # print(x)
-    # y = ad.make_variable(np.array([2, 1]), 3)
-    # print(y)
-    assert(ad.Variable(np.array([2, 1]), 3).get_derivative == ad.make_variable(np.array([2, 1]), 3).get_derivative)
-    # print(ad.Variable(np.array([2, 1]), 3).get_derivative == ad.make_variable(np.array([2, 1]), 3).get_derivative)
-    # print(ad.make_variable(np.array([2, 1]), 3))
-    assert (ad.Variable(np.array([2, 1]), 3) == ad.make_variable(np.array([2, 1]), 3))
+    assert ad.Variable(np.array([2, 1]), 3) == ad.make_variable(np.array([2, 1]), 3)
+    assert ad.Variable(3, np.array([4, 5])) == ad.make_variable(3, np.array([4, 5]))
 
 def test_ne():
     assert ad.Variable(1, 2) != ad.Variable(2, 3)
@@ -42,6 +40,8 @@ def test_get_derivative():
 def test_variable_types():
     with pytest.raises(TypeError):
         assert ad.Variable('test')
+    with pytest.raises(ValueError):
+        assert ad.Variable(np.array(["test", "test"]), 2)
         
 def test_make_variable():
     assert ad.make_variable(3, 5) == ad.Variable(3,5)
@@ -125,12 +125,16 @@ def test_add():
     assert (1 + ad.Variable(1)).der == 1
     assert (ad.Variable(1) + ad.Variable(1)).val == 2
     assert (ad.Variable(1) + ad.Variable(1)).der == 2
+    assert np.array_equal((ad.Variable(np.array([1,2]), np.array([1,2])) + ad.Variable(np.array([1,2]), np.array([1,2]))).val, np.array([2, 4]))
+    assert np.array_equal((ad.Variable(np.array([1,2]), np.array([1,2])) + ad.Variable(np.array([1,2]), np.array([1,2]))).der, np.array([2, 4]))
 
 def test_sub():
     assert (ad.Variable(1) - 1).val == 0
     assert (ad.Variable(1) - 1).der == 1
     assert (ad.Variable(1) - ad.Variable(1)).val == 0
     assert (ad.Variable(1) - ad.Variable(1)).der == 0
+    assert np.array_equal((ad.Variable(np.array([1,2]), np.array([3,4])) - ad.Variable(np.array([1,2]), np.array([1,2]))).val, np.array([0, 0]))
+    assert np.array_equal((ad.Variable(np.array([1,2]), np.array([3,4])) - ad.Variable(np.array([1,2]), np.array([1,2]))).der, np.array([2, 2]))
 
 def test_mul():
     assert (ad.Variable(1) * 2).val == 2
