@@ -108,7 +108,7 @@ def test_rdlogistic():
     assert all(np.around(f.get_value(), 8) == [0.88079708])
 
 def test_RD():
-    x = ad.RD(np.array([2]))
+    x = ad.RD(np.array([2,1,4]))
     assert all(x.val == [2,1,4])
     assert all(x.grad == [1,1,1])
     assert x.children == []
@@ -249,7 +249,8 @@ def test_rdne():
     assert (x != y)
 
 def test_rdrepr():
-    assert print(ad.RD(1)) == "value = [2], derivative = [1.]"
+    x = ad.RD(np.array([2]))
+    assert (x.__repr__() == "value = [2], derivative = [1.]")
 
 if __name__ == '__main__':
     test_rdsin()
