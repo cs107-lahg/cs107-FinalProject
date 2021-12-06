@@ -248,6 +248,9 @@ def test_rdne():
     y = ad.RD(np.array([3,3]))
     assert (x != y)
 
+def test_rdrepr():
+    assert print(ad.RD(1)) == "value = [2], derivative = [1.]"
+
 if __name__ == '__main__':
     test_rdsin()
     test_rdcos()
@@ -272,6 +275,7 @@ if __name__ == '__main__':
     test_rdpow()
     test_rdeq()
     test_rdne()
+    test_rdrepr()
 
 
 
