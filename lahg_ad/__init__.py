@@ -1,2 +1,3 @@
-__all__ = ['fd']
+__all__ = ['fd', 'rd']
 from .fd import *
+from .rd import RD
