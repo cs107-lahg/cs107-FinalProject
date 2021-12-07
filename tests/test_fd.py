@@ -48,7 +48,7 @@ def test_sin():
 
     x = ad.Variable(5, 1).sin()
     assert x.val == -0.9589242746631385
-    assert x.der == 0.2836621854632263
+    assert x.der == 0.28366218546322625
 
     x = ad.Variable(np.array([np.pi/2, np.pi/2]), np.array([0, 0])).sin()
     assert np.array_equal(x.val, np.array([1, 1]))
