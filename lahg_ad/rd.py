@@ -488,7 +488,27 @@ class RD:
         """
         return self.__pow__(0.5)
     
-    
+    def __repr__(self):
+        """
+        Dunder method for printing output
+        
+        INPUTS
+        ------
+        None
+
+        RETURNS
+        -------
+        The attributes of the RD object
+        
+        EXAMPLES
+        --------
+        >>> x = RD(np.array([2]))
+        >>> print(x)
+        value = [2], derivative = [1.]
+        """
+        
+        return f"value = {self.get_value()}, derivative = {self.get_derivative()}"
+        
     def get_value(self):
         """
         Method to get value of a RD object.
