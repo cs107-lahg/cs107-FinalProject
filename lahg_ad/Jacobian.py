@@ -25,15 +25,15 @@ def Jacobian_der(func_list):
         
     EXAMPLES
     --------
-    >>> x = Variable(4, np.array([1, 0]))
-    >>> y = Variable(3, np.array([0, 1]))
+    >>> x = ad.Variable(4, np.array([1, 0]))
+    >>> y = ad.Variable(3, np.array([0, 1]))
     >>> f = [x+y, x**3, x*y]
     >>> print(Jacobian_der(f))
     [[ 1  1]
      [48  0]
      [ 3  4]]
     
-    >>> x = Variable(4, np.array([1, 0]))
+    >>> x = ad.Variable(4, np.array([1, 0]))
     >>> f = [x+2, x**2]
     >>> print(Jacobian_der(f))
     [[1 0]
@@ -71,13 +71,13 @@ def Jacobian_val(func_list):
          
     EXAMPLES
     --------
-    >>> x = Variable(4, np.array([1, 0]))
-    >>> y = Variable(3, np.array([0, 1]))
+    >>> x = ad.Variable(4, np.array([1, 0]))
+    >>> y = ad.Variable(3, np.array([0, 1]))
     >>> f = [x+y, x**3, x*y]
     >>> print(Jacobian_val(f))
     [ 7 64 12]
     
-    >>> x = Variable(4, np.array([1, 0]))
+    >>> x = ad.Variable(4, np.array([1, 0]))
     >>> f = [x+2, x**2]
     >>> print(Jacobian_val(f))
     [ 6 16]
