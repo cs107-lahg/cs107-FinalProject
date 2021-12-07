@@ -29,3 +29,6 @@ def test_jacobian():
     f = [z**2, x+y, x*y]
     with pytest.raises(Exception):
         Jacobian_der(f)
+
+if __name__ == '__main__':
+    test_jacobian()
