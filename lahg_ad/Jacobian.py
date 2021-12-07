@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from fd import Variable
+import lagh_ad as ad
 import numpy as np
 
 def Jacobian_der(func_list):
