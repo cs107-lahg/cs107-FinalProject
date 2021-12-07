@@ -16,7 +16,7 @@ import numpy as np
 
 def test_jacobian():
     x = ad.Variable(1, np.array([0, 1]))
-    y = ad.Variable(2, np.array([1, 0]))
+    y = ad.Variable(2, np.array([1, 0])) 
     f = [x**2, x+y, y**2]
     assert np.array_equal(ad.Jacobian_der(f), np.array([[0, 2], [1, 1], [4, 0]]))
     assert np.array_equal(ad.Jacobian_val(f), np.array([1, 3, 4]))

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import lagh_ad as ad
+import lahg_ad as ad
 import numpy as np
 
 def Jacobian_der(func_list):
@@ -43,7 +43,7 @@ def Jacobian_der(func_list):
     der = []
     expect_shape = len(func_list[0].der)
     for func in func_list:
-        if not isinstance(func, Variable):
+        if not isinstance(func, ad.Variable):
             raise Exception("The input must be a list of Variable objects")
         if len(func.der) != expect_shape:
             raise Exception("The input functions have different dimensions!")
@@ -85,7 +85,7 @@ def Jacobian_val(func_list):
     """
     val = []
     for func in func_list:
-        if not isinstance(func, Variable):
+        if not isinstance(func, ad.Variable):
             raise Exception("The input must be a list of Variable objects")
         val.append(func.val)
     return np.array(val)
