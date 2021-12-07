@@ -47,8 +47,8 @@ def test_sin():
     assert x.der == 1.0
 
     x = ad.Variable(5, 1).sin()
-    assert x.val == -0.9589242746631385
-    assert x.der == 0.28366218546322625
+    assert x.val == np.sin(5)
+    assert x.der == np.cos(5) * 1
 
     x = ad.Variable(np.array([np.pi/2, np.pi/2]), np.array([0, 0])).sin()
     assert np.array_equal(x.val, np.array([1, 1]))
@@ -294,6 +294,35 @@ def test_pow():
     assert (y ** x).val == 3 ** 2
     assert (y ** x).der == 2 * 3 ** (2 - 1) * 0 + np.log(3) * 3 ** 2 * 1
 
+    # Vector input tests
+    x = ad.Variable(np.array([0,2]), np.array([5,6]))**2
+    assert np.array_equal(x.val, np.array([0, 4]))
+    assert np.array_equal(x.der, np.array([0, 24]))
+    x = ad.Variable(np.array([5,2]), np.array([5,6]))**-3.5
+    assert np.array_equal(x.val, np.array([5**-3.5, 2**-3.5]))
+    assert np.array_equal(x.der, np.array([-3.5*5**(-3.5-1)*5, -3.5*2**(-3.5-1)*6]))
+
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([-1,2]), np.array([5,6]))**-3
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([0,2]), np.array([5,6]))**-3
+    
+    x = ad.Variable(np.array([0,2]), np.array([5,6]))
+    y = ad.Variable(np.array([2,1]), np.array([1,2]))
+    f = x ** y
+    assert(np.array_equal(f.val, np.array([0, 2])))
+    assert(np.array_equal(f.der, np.array([0, 6])))
+
+    x = ad.Variable(np.array([3,2]), np.array([5,6]))
+    y = ad.Variable(np.array([2,1]), np.array([1,2]))
+    f = x ** y
+    assert(np.array_equal(f.val, np.array([9, 2])))
+    assert(np.array_equal(f.der, np.array([2*3**(2-1)*5+np.log(3)*3**2*1, 1*2**(1-1)*6+np.log(2)*2**1*2])))
+
+    x = 2**ad.Variable(np.array([0,2]), np.array([5,6]))
+    assert np.array_equal(x.val, np.array([1, 4]))
+    assert np.array_equal(x.der, np.array([np.log(2)*2**0*5, np.log(2)*2**2*6]))
+
 def test_log():
     assert ad.Variable(1).log().val == 0
     assert ad.Variable(1).log().der == 1
@@ -318,6 +347,10 @@ def test_sqrt():
         ad.Variable(-1).sqrt()
     with pytest.raises(ValueError):
         ad.Variable(0).sqrt()
+    
+    x = ad.Variable(np.array([1,2]), np.array([4,4])).sqrt()
+    assert np.array_equal(x.val, np.array([1, np.sqrt(2)]))
+    assert np.array_equal(x.der, np.array([2, np.sqrt(2)]))
 
 def test_variable_types():
     with pytest.raises(TypeError):

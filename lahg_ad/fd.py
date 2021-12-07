@@ -899,6 +899,30 @@ class Variable:
         >>> f = x ** y
         >>> print(f)
         value = 0.01788854381999832, derivative = -0.00894427190999916
+
+        # Raising a Variable object with vector input to the power of a positive int
+        >>> import numpy as np
+        >>> x = Variable(np.array([0,2]), np.array([5,6]))
+        >>> y = 2
+        >>> f = x ** y
+        >>> print(f)
+        value = [0 4], derivative = [ 0 24]
+
+        # Raising a Variable object with vector input to the power of a negative float
+        >>> import numpy as np
+        >>> x = Variable(np.array(np.array([5,2]), np.array([5,6]))
+        >>> y = -3.5
+        >>> f = x ** y
+        >>> print(f)
+        value = [0.00357771 0.08838835], derivative = [-0.01252198 -0.92807765]
+
+        # Raising a Variable object with vector input to the power of another Variable object with vector input
+        >>> import numpy as np
+        >>> x = Variable(np.array([3,2]), np.array([5,6]))
+        >>> y = Variable(np.array([2,1]), np.array([1,2]))
+        >>> f = x ** y
+        >>> print(f)
+        value = [9, 2], derivative = [39.8875106, 8.77258872]
         """
         
           
@@ -907,19 +931,32 @@ class Variable:
         
         try:
             value = self.val ** other.val
-            if self.val <= 0:
-                derivative = other.val * self.val ** (other.val - 1) * self.der
-            else:
-                derivative = other.val * self.val ** (other.val - 1) * self.der + np.log(
+            if isinstance(self.val, np.ndarray):
+                if (self.val <= 0).any():
+                    derivative = other.val * self.val ** (other.val - 1) * self.der
+                else:
+                    derivative = other.val * self.val ** (other.val - 1) * self.der + np.log(
                     self.val) * self.val ** other.val * other.der
+            else:
+                if self.val <= 0:
+                    derivative = other.val * self.val ** (other.val - 1) * self.der
+                else:
+                    derivative = other.val * self.val ** (other.val - 1) * self.der + np.log(
+                        self.val) * self.val ** other.val * other.der
             return Variable(value, derivative)
-                    
+        # If multiplying Variable object with real number
         except AttributeError:
-            if (self.val <= 0) and ((other - int(other)) != 0):
+            if isinstance(self.val, np.ndarray):
+                if (self.val <= 0).any() and ((other - int(other)) != 0):
+                    raise ValueError("Cannot take derivative of the root of a non-positive number")
+            elif (self.val <= 0) and ((other - int(other)) != 0):
                 raise ValueError("Cannot take derivative of the root of a non-positive number")
             
-            if self.val == 0 and other < 0:
-                raise  ValueError("Cannot raise the negative power of 0")
+            if isinstance(self.val, np.ndarray):
+                if (self.val == 0).any() and other < 0:
+                    raise ValueError("Cannot raise the negative power of 0")
+            elif self.val == 0 and other < 0:
+                raise ValueError("Cannot raise the negative power of 0")
             
             value = self.val ** other
             derivative = other * self.val ** (other - 1) * self.der
@@ -942,6 +979,11 @@ class Variable:
         >>> x = Variable(5, 1)
         >>> print(3 ** x)
         value = 243, derivative = 266.96278614635065
+
+        >>> import numpy as np
+        >>> x = Variable(np.array([0,2]), np.array([5,6]))
+        >>> print(2 ** x)
+        value = [1 4], derivative = [ 3.4657359  16.63553233]
         """
         
         value = other ** self.val
@@ -1012,6 +1054,12 @@ class Variable:
         >>> f = x.sqrt()
         >>> print(f)
         value = 2.23606797749979, derivative = 0.22360679774997896
+
+        >>> import numpy as np
+        >>> x = Variable(np.array([1,2]), np.array([4,4]))
+        >>> f = x.sqrt()
+        >>> print(f)
+        value = [1.         1.41421356], derivative = [2.         1.41421356]
         """
         return self.__pow__(0.5)
     
