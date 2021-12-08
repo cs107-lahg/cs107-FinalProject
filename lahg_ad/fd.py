@@ -22,11 +22,11 @@ class Variable:
     
     # vector input
     >>> import numpy as np
-    >>> x = ad.Variable(5, np.array([1, 4]))
-    >>> y = ad.Variable(7, np.array([3, 1]))
+    >>> x = Variable(5, np.array([1, 4]))
+    >>> y = Variable(7, np.array([3, 1]))
     >>> f = np.cos(x*y) + x * y + 3*np.log(x)
     >>> print(f)
-    value = 38.92462153221079, derivative = [32.02001873 49.53002809]
+    value = 36.19321780791655, derivative = [31.68059542 48.17233485]
     """
    
     
@@ -50,7 +50,7 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(np.array([5, 6]), np.array([6, 2]))
         >>> print(x)
-        value = [5, 6], derivative = [6, 2]
+        value = [5 6], derivative = [6 2]
         """
 
         if isinstance(value, np.ndarray) or isinstance(derivative_seed, np.ndarray):
@@ -96,7 +96,7 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(np.array([5, 6]), np.array([6, 2]))
         >>> print(x)
-        value = [5, 6], derivative = [6, 2]
+        value = [5 6], derivative = [6 2]
         """
         
         return f"value = {self.val}, derivative = {self.der}"
@@ -124,7 +124,7 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(np.array([2, 1]), 3)
         >>> print(x.get_value())
-        [2.  1.]
+        [2 1]
         """
         
         return self.val
@@ -152,7 +152,7 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(3, np.array([2, 1]))
         >>> print(x.get_derivative())
-        [2.  1.]
+        [2 1]
 
         """
         return self.der
@@ -179,7 +179,7 @@ class Variable:
         >>> import numpy as np
         >>> x = Variable(np.array([2, 7]), np.array([8, 7]))
         >>> print(- x)
-        value = [-2, -7], derivative = [8, 7]
+        value = [-2 -7], derivative = [-8 -7]
         """
         
         value = - self.val
@@ -212,7 +212,7 @@ class Variable:
         >>> x = Variable(np.array([np.pi/2, np.pi/2]), np.array([0, 0]))
         >>> f = x.sin()
         >>> print(f)
-        value = [1, 1], derivative = [0, 0]
+        value = [1. 1.], derivative = [0. 0.]
         """
         
         value = np.sin(self.val)
@@ -244,12 +244,12 @@ class Variable:
         >>> x = Variable(np.array([0, 0]), np.array([np.pi/2, np.pi/2]))
         >>> f = x.cos()
         >>> print(f)
-        value = [1, 1], derivative = [0, 0]
+        value = [1. 1.], derivative = [-0. -0.]
         """
         
         value = np.cos(self.val)
-        derivative = - np.sin(self.val) * self.der
-        return Variable(value,derivative)
+        derivative = (-1) * np.sin(self.val) * self.der
+        return Variable(value, derivative)
         
     
     def tan(self):
@@ -282,7 +282,7 @@ class Variable:
         >>> x = Variable(np.array([np.pi/4, 0]), np.array([0, 1]))
         >>> f = x.tan()
         >>> print(f)
-        value = [1, 0], derivative = [0, 1]
+        value = [1. 0.], derivative = [0. 1.]
         """
         
         value = np.tan(self.val)
@@ -360,7 +360,7 @@ class Variable:
         value = 1.0471975511965976, derivative = -1.1547005383792517
 
         >>> import numpy as np
-        >>> x = Variable(np.array([0.1909541009109912 0.008621310230472745]), np.array([0.44260489479900333, 0.9877402928856399]))
+        >>> x = Variable(np.array([0.1909541009109912, 0.008621310230472745]), np.array([0.44260489479900333, 0.9877402928856399]))
         >>> f = x.arccos()
         >>> print(f)
         value = [1.37866229 1.56217491], derivative = [-0.45090196 -0.987777  ]
@@ -425,7 +425,7 @@ class Variable:
         value = 3.6268604078470186, derivative = 18.81097845541816
 
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1, 2]), np.array([3, 4]))
+        >>> x = Variable(np.array([1, 2]), np.array([3, 4]))
         >>> f = x.sinh()
         >>> print(f)
         value = [1.17520119 3.62686041], derivative = [ 4.6292419  15.04878276]
@@ -452,7 +452,7 @@ class Variable:
         value = 201.7156361224559, derivative = 201.71315737027922
 
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1, 2]), np.array([3, 4]))
+        >>> x = Variable(np.array([1, 2]), np.array([3, 4]))
         >>> f = x.cosh()
         >>> print(f)
         value = [1.54308063 3.76219569], derivative = [ 3.52560358 14.50744163]
@@ -479,7 +479,7 @@ class Variable:
         value = 0.9640275800758169, derivative = 0.07065082485316447
 
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1, 2]), np.array([3, 4]))
+        >>> x = Variable(np.array([1, 2]), np.array([3, 4]))
         >>> f = x.tanh()
         >>> print(f)
         value = [0.76159416 0.96402758], derivative = [1.25992302 0.2826033 ]
@@ -490,7 +490,7 @@ class Variable:
         return Variable(val, der)
     
     
-    def exp(self):
+    def exp(self, base = None):
         """
         Value and derivative computation of exp function
         
@@ -512,15 +512,25 @@ class Variable:
         value = 148.4131591025766, derivative = 296.8263182051532
 
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1, 2]), np.array([3, 4]))
+        >>> x = Variable(np.array([1, 2]), np.array([3, 4]))
         >>> f = x.exp()
         >>> print(f)
         value = [2.71828183 7.3890561 ], derivative = [ 8.15484549 29.5562244 ]
-        """
         
-        value = np.exp(self.val)
-        derivative = np.exp(self.val) * self.der
-        return Variable(value, derivative)
+        >>> x = Variable(np.array([1, 2, 3]), np.array([1, 1, 1]))
+        >>> f = x.exp(base = 2)
+        >>> print(f)
+        value = [2 4 8], derivative = [1.38629436 2.77258872 5.54517744]
+        
+        """
+        if base == None:
+            value = np.exp(self.val)
+            derivative = np.exp(self.val) * self.der
+            return Variable(value, derivative)
+        elif isinstance(base, (int, float)):
+            return self.__rpow__(base)
+        else:
+            raise Exception("Exponential base must be int or float !")
     
     def __eq__(self, other):
         """
@@ -614,7 +624,7 @@ class Variable:
 
         >>> import numpy as np
         >>> x = Variable(np.array([1, 2]), np.array([1, 2]))
-        >>> y = Variable(np.array([1, 2]), np.array([3, 4])
+        >>> y = Variable(np.array([1, 2]), np.array([3, 4]))
         >>> x != y
         True
         """
@@ -663,7 +673,7 @@ class Variable:
         >>> y = Variable(np.array([2,2]), np.array([3,3]))
         >>> f = x + y
         >>> print(f)
-        value = [3, 4], derivative = [6, 5]
+        value = [3 4], derivative = [6 5]
 
         # addition of one Variable object with vector input and a real number
         >>> import numpy as np
@@ -671,7 +681,7 @@ class Variable:
         >>> y = 1
         >>> f = x + y
         >>> print(f)
-        value = [2. 3.], derivative = [1.  2.]
+        value = [2 3], derivative = [1 2]
         """
         
         try:
@@ -719,7 +729,7 @@ class Variable:
         >>> y = Variable(np.array([2,2]), np.array([3,3]))
         >>> f = x - y
         >>> print(f)
-        value = [-1. 0.], derivative = [0. -1.]
+        value = [-1  0], derivative = [ 0 -1]
 
         # subtraction of one Variable object with vector input and a real number
         >>> import numpy as np
@@ -727,7 +737,7 @@ class Variable:
         >>> y = 1
         >>> f = x - y
         >>> print(f)
-        value = [0. 1.], derivative = [1.  2.]
+        value = [0 1], derivative = [1 2]
         """
 
         try:
@@ -771,19 +781,19 @@ class Variable:
 
         # test multiplication of two Variable objects with vector input
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4]))
-        >>> y = ad.Variable(np.array([2,2]), np.array([2,2]))
+        >>> x = Variable(np.array([1,2]), np.array([3,4]))
+        >>> y = Variable(np.array([2,2]), np.array([2,2]))
         >>> f = x * y
         >>> print(f)
         value = [2 4], derivative = [ 8 12]
 
         # test multiplication of one Variable object with vector input and a real number
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([6,8]))
+        >>> x = Variable(np.array([1,2]), np.array([6,8]))
         >>> y = 2
         >>> f = x * y
         >>> print(f)
-        value = [2 4], derivative = [ 12 16]
+        value = [2 4], derivative = [12 16]
         """
         
         try:
@@ -829,19 +839,19 @@ class Variable:
 
         # test division of two Variable objects with vector input
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4])) 
-        >>> y = ad.Variable(np.array([2,2]), np.array([5,6]))
+        >>> x = Variable(np.array([1,2]), np.array([3,4])) 
+        >>> y = Variable(np.array([2,2]), np.array([5,6]))
         >>> f = x / y
         >>> print(f)
         value = [0.5 1. ], derivative = [ 0.25 -1.  ]
 
         # test division of one Variable object with vector input and a real number
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4])) 
+        >>> x = Variable(np.array([1,2]), np.array([3,4])) 
         >>> y = 2
         >>> f = x / y
         >>> print(f)
-        value = [2.  1. ], derivative = [ -6 .-2.  ]
+        value = [0.5 1. ], derivative = [1.5 2. ]
         """
         
         try:
@@ -948,9 +958,9 @@ class Variable:
         derivative = np.log(other) * other ** self.val * self.der
         return Variable(value, derivative)
           
-    def log (self):
+    def log (self, base = 10):
         """
-        Value and derivative computation of the log function (base e)
+        Value and derivative computation of the log function (base 10 by default)
         
         INPUTS
         ------
@@ -960,8 +970,9 @@ class Variable:
         ------
         ValueError
             When the input value is less than or equal to 0
+            When base is not a number
+            When base is not a positive number
 
-        
         RETURNS
         -------
         A Variable object
@@ -971,16 +982,25 @@ class Variable:
         --------
         >>> import numpy as np
         >>> x = Variable(5, 1)
-        >>> f = x.log()
+        >>> f = x.log(base = np.e)
         >>> print(f)
         value = 1.6094379124341003, derivative = 0.2
 
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4]))
-        >>> f = x.log()
+        >>> x = Variable(np.array([1,2]), np.array([3,4]))
+        >>> f = x.log(base = np.e)
         >>> print(f)
         value = [0.         0.69314718], derivative = [3. 2.]
+        
+        >>> x = Variable(np.array([1, 2, 3]), np.array([1, 1, 1]))
+        >>> f = x.log(0.5)
+        >>> print(f)
+        value = [-0.        -1.        -1.5849625], derivative = [-1.44269504 -0.72134752 -0.48089835]
         """
+        if not isinstance(base, (int,float)):
+            raise ValueError("The log base must be a number!")
+        if base <= 0 or (not isinstance(base, (int, float))):
+            raise ValueError("The log base must be a positive number (int or float)")
 
         if isinstance(self.val, np.ndarray):
             if (self.val <= 0).any():
@@ -988,8 +1008,8 @@ class Variable:
         elif self.val <= 0:
             raise ValueError("Cannot take the log of a non-positive number")
  
-        value = np.log(self.val)
-        derivative = (1/self.val)*self.der
+        value = np.log(self.val) / np.log(base)
+        derivative = 1 / (self.val * np.log(base)) * self.der
         return Variable(value, derivative)
     
     def sqrt (self):
@@ -1049,7 +1069,7 @@ class Variable:
         >>> y = Variable(np.array([2,2]), np.array([3,3]))
         >>> f = y + x
         >>> print(f)
-        value = [3, 4], derivative = [6, 5]
+        value = [3 4], derivative = [6 5]
 
         # addition of one Variable object with vector input and a real number
         >>> import numpy as np
@@ -1057,7 +1077,7 @@ class Variable:
         >>> y = 1
         >>> f = y + x
         >>> print(f)
-        value = [2, 3], derivative = [1, 2]
+        value = [2 3], derivative = [1 2]
         """
         
         return self.__add__(other)
@@ -1096,7 +1116,7 @@ class Variable:
         >>> y = Variable(np.array([2,2]), np.array([3,3]))
         >>> f = x - y
         >>> print(f)
-        value = [-1. 0.], derivative = [0. -1.]
+        value = [-1  0], derivative = [ 0 -1]
 
         # subtraction of one Variable object with vector input and a real number
         >>> import numpy as np
@@ -1104,7 +1124,7 @@ class Variable:
         >>> y = 1
         >>> f = y - x
         >>> print(f)
-        value = [0, -1], derivative = [-1, -2]
+        value = [ 0 -1], derivative = [-1 -2]
         """
         
         return other + (-self)
@@ -1139,19 +1159,19 @@ class Variable:
 
         # test multiplication of two Variable objects with vector input
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4]))
-        >>> y = ad.Variable(np.array([2,2]), np.array([2,2]))
+        >>> x = Variable(np.array([1,2]), np.array([3,4]))
+        >>> y = Variable(np.array([2,2]), np.array([2,2]))
         >>> f = x * y
         >>> print(f)
         value = [2 4], derivative = [ 8 12]
 
         # test multiplication of one Variable object with vector input and a real number
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([6,8]))
+        >>> x = Variable(np.array([1,2]), np.array([6,8]))
         >>> y = 2
         >>> f = y * x
         >>> print(f)
-        value = [2 4], derivative = [ 12 16]
+        value = [2 4], derivative = [12 16]
         """
         
         return self.__mul__(other)        
@@ -1193,19 +1213,19 @@ class Variable:
 
         # test division of two Variable objects with vector input
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4])) 
-        >>> y = ad.Variable(np.array([2,2]), np.array([5,6]))
+        >>> x = Variable(np.array([1,2]), np.array([3,4])) 
+        >>> y = Variable(np.array([2,2]), np.array([5,6]))
         >>> f = x / y
         >>> print(f)
         value = [0.5 1. ], derivative = [ 0.25 -1.  ]
 
         # test division of one Variable object with vector input and a real number
         >>> import numpy as np
-        >>> x = ad.Variable(np.array([1,2]), np.array([3,4])) 
+        >>> x = Variable(np.array([1,2]), np.array([3,4])) 
         >>> y = 2
         >>> f = y / x
         >>> print(f)
-        value = [2.  1. ], derivative = [ -6 .-2.  ]
+        value = [2. 1.], derivative = [-6. -2.]
         """
         
         if isinstance(self.val, np.ndarray):
@@ -1221,6 +1241,30 @@ class Variable:
             new_val = other / self.val
             new_der = - other/ (self.val ** 2) * self.der
             return Variable(new_val, new_der)
+        
+    def logistic(self):
+        """
+        Method to perform logistic operation.
+
+        RETURNS
+        -------
+        A Variable object
+        
+        EXAMPLES
+        --------
+        >>> x = Variable(5, 1)
+        >>> f = x.logistic()
+        >>> print(f)
+        value = 0.9933071490757153, derivative = 0.006648056670790156
+        
+        >>> x = Variable(np.array([1, 2, 3]), np.array([1, 1, 1]))
+        >>> f = x.logistic()
+        >>> print(f)
+        value = [0.73105858 0.88079708 0.95257413], derivative = [0.19661193 0.10499359 0.04517666]
+        """
+        new_val = 1 / (1 + np.exp(-self.val))
+        new_der = np.exp(-self.val) / ((1 + np.exp(-self.val)) ** 2) * self.der
+        return Variable(new_val, new_der)
 
             
     
@@ -1255,9 +1299,9 @@ def make_variables(var_list, der_list):
     >>> import numpy as np
     >>> x = make_variables([np.array([3, 4]), np.array([1, 5])], [np.array([1, 2]), np.array([1, 5])])
     >>> print(x[0])
-    value = [ 3. 4.], derivative = [1. 2.]
+    value = [3 4], derivative = [1 2]
     >>> print(x[1])
-    value = [1. 5], derivative = [1. 5.]
+    value = [1 5], derivative = [1 5]
     """
     
     if len(var_list) != len(der_list):
@@ -1295,7 +1339,7 @@ def make_variable(var,der):
     >>> import numpy as np
     >>> x = make_variable(np.array([1, 2]), np.array([3,3]))
     >>> print(x)
-    value = [1. 2.], derivative = [3. 3.]
+    value = [1 2], derivative = [3 3]
     """
     return Variable(var, der)
 
