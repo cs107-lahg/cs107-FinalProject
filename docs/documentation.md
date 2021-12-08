@@ -250,7 +250,7 @@ The forward pass computes the partial derivative using the elementary functions,
 
 With this in mind, we plan to build a graph of nodes starting with our x and/or y inputs. Starting with the forward pass, x and/or y will become the root of our graph. As we build our expression, we would create a child node on our graph for each operation we perform. This would allow us to easily perform a reverse pass as we've created a parent-child relationship between the nodes. The gradient computations will be saved in our nodes and we would be able to use those weights in the reverse pass.
 
-Milestone 2 Feedback: 
+__Milestone 2 Feedback__: 
 
 ### Description of your extension
 
@@ -262,12 +262,13 @@ For AD reverse mode, our algorithm "stores" the computation graph -- the relatio
 
 AD reverse mode sets up the computational trace using the same computational graph as AD forward mode, but it computes the derivative in the opposite direction of the computational graph. It surpasses forward mode in the aspect of efficiency, since it computes multiple partial derivatives at one shot, while forward mode must be performed multiple times. AD reverse mode is widely used in machine learning algorithms such as backward propagation.
 
-The fundamental theory behind reverse mode is chain rule, and each outgoing arrow from a variable contributes to the corresponding adjoint variable by its term in the chain rule following the computation graph. For example, here is a simple function: <img src="https://render.githubusercontent.com/render/math?math= f = {(x + y)}^2">
+The fundamental theory behind reverse mode is chain rule, and each outgoing arrow from a variable contributes to the corresponding adjoint variable by its term in the chain rule following the computation graph. For example, here is a simple function <img src="https://latex.codecogs.com/svg.image?f&space;=&space;(x&plus;y)^{2}" title="f = (x+y)^{2}" />.  
 
 Following is its computational graph:
 
+![compgraph](figures/reversecompgraph.png)
 
-The final derivative with respect to <img src="https://render.githubusercontent.com/render/math?math= v_0"> and <img src="https://render.githubusercontent.com/render/math?math= v_1"> are computed as:
+The final derivative with respect to <img src="https://latex.codecogs.com/svg.image?v_0" title="v_0" /> and <img src="https://latex.codecogs.com/svg.image?v_1" title="v_1" /> are computed reversely as:
 
 <img src="https://latex.codecogs.com/svg.image?\frac{\partial&space;f}{\partial&space;v_0}&space;=&space;\frac{\partial&space;f}{\partial&space;v_3}&space;\times&space;\frac{\partial&space;v_3}{\partial&space;v_2}&space;\times&space;\frac{\partial&space;v_2}{\partial&space;v_0}" title="\frac{\partial f}{\partial v_0} = \frac{\partial f}{\partial v_3} \times \frac{\partial v_3}{\partial v_2} \times \frac{\partial v_2}{\partial v_0}" />
 
@@ -298,4 +299,4 @@ After though consideration, we still would like to distribute our package on PyP
 
 - As stated in the __introduction__ section, automatic differentiation has application in various fields. In our next step, we would like to extend our package to solve optimization problems such as gradient descent in linear regression, or backward propagation in training neural networks. Besides, writing a root-sfinding function is also a great future extension given that we already have AD forward/reverse mode in hand. These methods will have great importance to solve problems that arise in machine learning, biomedical research, finance, etc. 
 
-- Now our package can only compute first-order derivative. In the near future, we would like to extend our package to include higher order derivative, which has broad applications in Mathematics, Statistics Fluid Machanics.
+- Now our package can only compute first-order derivative. In the near future, we would like to extend our package to include higher-order derivative, which has broad applications in Mathematics, Statistics Fluid Mechanics.
