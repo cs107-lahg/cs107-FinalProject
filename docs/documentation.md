@@ -36,8 +36,6 @@ Each “row” in this table can be represented by a data structure called a dua
 
 If there are multiple input variables, then each intermediate variable can have multiple partial derivatives corresponding to each of the inputs. In the case of multiple input variables, forward AD computes a Jacobian-vector product that consists of a matrix of each function’s partial derivatives evaluated at a point. Since a dual number can only store one derivative value in the dual part, each pass through AD will find the partial derivative of y with respect to a particular input variable. To specify which partial derivative to extract, you can set a “seed vector” p of your choosing (ex. For f(x1,x2), you can set p to [1,0] to find the partial derivative of the function with respect to input x1). At each intermediate variable, you consider the vector p and focus on deriving the partial derivative with respect to x1. You can take the dot product of the gradient (list of partial derivatives of the function) and seed vector p to get the partial derivative of the function with respect to input x1.
 
-For AD reverse mode, our algorithm "stores" the computation graph -- the replationship between "parent" node and "child" node. Once the function computation is done and the get derivative method is called on the "parent" node, the algorithm computes its derivative recursively from all of its children, and finally update its derivative. AD reverse mode is widely used in machine learning algorithms such as backward propogation.
-
 ## How to use _lahg_package_
 
 ### Installation Method 1: Install from our Git repository
@@ -140,6 +138,7 @@ lagh_ad
 ├── docs/                   Main project documentation
 │   ├── figures/            Folder for figures
 │   ├── README.md           README for docs
+|   ├── documentation.md    Final Documentation for lahg_ad package
 │   └── milestone[x].md     Documentation for each milestone
 │
 ├── dev/                    Project planning/development (optional)
@@ -148,7 +147,8 @@ lagh_ad
 │
 ├── src/                    Package source files
 │   ├── fd.py               Main constructor for forward mode
-│   └── rv.py               Reverse mode (Future Implementation)
+|   ├── Jacobian.py         Helper functions to compute Jacobian Matrix
+│   └── rv.py               Reverse mode 
 │
 └── tests/                  Package test scripts
     ├── run_tests.py        script that runs all tests
@@ -237,6 +237,7 @@ Descriptions of the implementation of our elementary functions are found in the 
 ## Extension
 
 ### new/future feature section of the documentation from Milestone 2 
+
 In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector functions. In order to do that, we will include a new module called Jacobian. The package functions will change since we will have to now have to have a vector of values and a vector of derivatives and also support vector-valued operations. We will implement this by leveraging our current scalar-valued implentation.
 
 We do not expect our folder structure to change very much, all our package-related functions will live in `lahg_ad` and become part of our main package, and we will test our code the same way.
@@ -249,9 +250,31 @@ The forward pass computes the partial derivative using the elementary functions,
 
 With this in mind, we plan to build a graph of nodes starting with our x and/or y inputs. Starting with the forward pass, x and/or y will become the root of our graph. As we build our expression, we would create a child node on our graph for each operation we perform. This would allow us to easily perform a reverse pass as we've created a parent-child relationship between the nodes. The gradient computations will be saved in our nodes and we would be able to use those weights in the reverse pass.
 
+Milestone 2 Feedback: 
+
 ### Description of your extension
 
-### Additional information or background
+We have two extensions from Milestone 2. First, the AD forward mode is extended to deal with vector inputs for value and derivative to compute the Jacobian matrix. The main data structure to realize that is numpy array. 
+
+For AD reverse mode, our algorithm "stores" the computation graph -- the relationship between "parent" node and "child" node in a Python list. Once the function computation is done following the computational graph, the get derivative method is called on the "root" node, the algorithm computes its derivative recursively from all of its children, and finally updates the derivative of the "root" node. 
+
+### Background of AD reverse mode
+
+AD reverse mode sets up the computational trace using the same computational graph as AD forward mode, but it computes the derivative in the opposite direction of the computational graph. It surpasses forward mode in the aspect of efficiency, since it computes multiple partial derivatives at one shot, while forward mode must be performed multiple times. AD reverse mode is widely used in machine learning algorithms such as backward propagation.
+
+The fundamental theory behind reverse mode is chain rule, and each outgoing arrow from a variable contributes to the corresponding adjoint variable by its term in the chain rule following the computation graph. For example, here is a simple function: <img src="https://render.githubusercontent.com/render/math?math= f = {(x + y)}^2">
+
+Following is its computational graph:
+
+
+The final derivative with respect to <img src="https://render.githubusercontent.com/render/math?math= v_0"> and <img src="https://render.githubusercontent.com/render/math?math= v_1"> are computed as:
+
+<img src="https://latex.codecogs.com/svg.image?\frac{\partial&space;f}{\partial&space;v_0}&space;=&space;\frac{\partial&space;f}{\partial&space;v_3}&space;\times&space;\frac{\partial&space;v_3}{\partial&space;v_2}&space;\times&space;\frac{\partial&space;v_2}{\partial&space;v_0}" title="\frac{\partial f}{\partial v_0} = \frac{\partial f}{\partial v_3} \times \frac{\partial v_3}{\partial v_2} \times \frac{\partial v_2}{\partial v_0}" />
+
+<img src="https://latex.codecogs.com/svg.image?\frac{\partial&space;f}{\partial&space;v_1}&space;=&space;\frac{\partial&space;f}{\partial&space;v_3}&space;\times&space;\frac{\partial&space;v_3}{\partial&space;v_2}&space;\times&space;\frac{\partial&space;v_2}{\partial&space;v_1}" title="\frac{\partial f}{\partial v_1} = \frac{\partial f}{\partial v_3} \times \frac{\partial v_3}{\partial v_2} \times \frac{\partial v_2}{\partial v_1}" />
+
+For more details, please refer to [Automatic Differentiation Wikipedia](https://en.wikipedia.org/wiki/Automatic_differentiation) page.
+
 
 ## Broader Impact and Inclusivity Statement
 
@@ -271,8 +294,8 @@ After though consideration, we still would like to distribute our package on PyP
 
 ## Future
 
-- Currently our package can only take in scalar or vector inputs, but computing derivatives for matrix computation could also be useful in many scenarios, such as in gradient descent algorithm in many machine learning applications. In the future, we would like to extend the functionality of our project to be able to handle matrix differentiation.
+- Currently, our package can only take in scalar or vector inputs, but computing derivatives for matrix computation could also be useful in many scenarios, such as in gradient descent algorithm in many machine learning applications. In the future, we would like to extend the functionality of our project to be able to handle matrix differentiation.
 
-- As stated in the __introduction__ section, automatic differentiation has application in various fields. In out next step, we would like to extend our package to solve optimization problems such as gradient descent in linear regression, or backward propagation in training neural networks. Besides, writing a root finding function is also a great future extension given that we already have AD forward/reverse mode in hand. These methods will have great importance to solve problems that arise in machine learning, biomedical research, finance, etc. 
+- As stated in the __introduction__ section, automatic differentiation has application in various fields. In our next step, we would like to extend our package to solve optimization problems such as gradient descent in linear regression, or backward propagation in training neural networks. Besides, writing a root-sfinding function is also a great future extension given that we already have AD forward/reverse mode in hand. These methods will have great importance to solve problems that arise in machine learning, biomedical research, finance, etc. 
 
-- higher order derivative? I think reverse mode can do that......
+- Now our package can only compute first-order derivative. In the near future, we would like to extend our package to include higher order derivative, which has broad applications in Mathematics, Statistics Fluid Machanics.
