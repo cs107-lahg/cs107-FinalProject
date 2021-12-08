@@ -137,6 +137,8 @@ def test_exp():
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).exp()
     assert np.array_equal(x.val, np.array([np.exp(1), np.exp(2)]))
     assert np.array_equal(x.der, np.array([np.exp(1)*3, np.exp(2)*4]))
+    with pytest.raises(ValueError):
+        ad.Variable(1.05, 3.2).exp(base = "Exponential")
 
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)

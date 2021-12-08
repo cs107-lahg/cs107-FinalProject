@@ -530,7 +530,7 @@ class Variable:
         elif isinstance(base, (int, float)):
             return self.__rpow__(base)
         else:
-            raise Exception("Exponential base must be int or float !")
+            raise ValueError("Exponential base must be int or float !")
     
     def __eq__(self, other):
         """
