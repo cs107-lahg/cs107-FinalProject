@@ -131,8 +131,8 @@ def test_tanh():
     assert np.array_equal(x.der, np.array([(1 / (np.cosh(1) ** 2)) * 3, (1 / (np.cosh(2) ** 2)) * 4]))
 
 def test_exp():
-    assert ad.Variable(1.05, 3.2).exp().val == np.exp(1.05)
-    assert ad.Variable(1.05, 3.2).exp().der == np.exp(1.05)*3.2
+    assert ad.Variable(1.05, 3.2).exp(base = 2).val == 2 ** 1.05
+    assert ad.Variable(1.05, 3.2).exp(base = 2).der == 4.592582163796847
     
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).exp()
     assert np.array_equal(x.val, np.array([np.exp(1), np.exp(2)]))
@@ -310,6 +310,10 @@ def test_log():
         ad.Variable(np.array([1,-1]), np.array([3,4])).log()
     with pytest.raises(ValueError):
         ad.Variable(np.array([0,2]), np.array([3,4])).log()
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([1,2]), np.array([3,4])).log(base = -1)
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([1,2]), np.array([3,4])).log(base = "Natural")
 
 def test_sqrt():
     assert ad.Variable(1).sqrt().val == 1.0
