@@ -29,8 +29,8 @@ def test_comp3():
 
 def test_comp4():
     x = ad.Variable(3,1)
-    f = x.log()
-    f = x.log()**1.2 / np.exp(x)
+    f = x.log(base = np.e)
+    f = x.log(base = np.e)**1.2 / np.exp(x)
     assert f.get_value() == 0.05573524279782748
     assert f.get_derivative() == -0.03544228107776609
 
