@@ -802,7 +802,7 @@ class RD:
     
     def log(self, base = 10):
         """
-        Method to perform log operation for RD objects.
+        Method to perform log operation for RD objects, the base is 10 by default.
 
         Parameters
         ----------

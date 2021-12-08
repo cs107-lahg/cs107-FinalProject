@@ -131,12 +131,14 @@ def test_tanh():
     assert np.array_equal(x.der, np.array([(1 / (np.cosh(1) ** 2)) * 3, (1 / (np.cosh(2) ** 2)) * 4]))
 
 def test_exp():
-    assert ad.Variable(1.05, 3.2).exp().val == np.exp(1.05)
-    assert ad.Variable(1.05, 3.2).exp().der == np.exp(1.05)*3.2
+    assert ad.Variable(1.05, 3.2).exp(base = 2).val == 2 ** 1.05
+    assert ad.Variable(1.05, 3.2).exp(base = 2).der == 4.592582163796847
     
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).exp()
     assert np.array_equal(x.val, np.array([np.exp(1), np.exp(2)]))
     assert np.array_equal(x.der, np.array([np.exp(1)*3, np.exp(2)*4]))
+    with pytest.raises(ValueError):
+        ad.Variable(1.05, 3.2).exp(base = "Exponential")
 
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)
@@ -324,21 +326,25 @@ def test_pow():
     assert np.array_equal(x.der, np.array([np.log(2)*2**0*5, np.log(2)*2**2*6]))
 
 def test_log():
-    assert ad.Variable(1).log().val == 0
-    assert ad.Variable(1).log().der == 1
+    assert ad.Variable(1).log(base = np.e).val == 0
+    assert ad.Variable(1).log(base = np.e).der == 1
     with pytest.raises(ValueError):
         ad.Variable(-1).log()
     with pytest.raises(ValueError):
         ad.Variable(0).log()
 
     x = ad.Variable(np.array([1,2]), np.array([3,4])).log()
-    assert np.array_equal(x.val, np.array([np.log(1), np.log(2)]))
-    assert np.array_equal(x.der, np.array([3, 2]))
+    assert np.array_equal(x.val, np.array([np.log(1)/np.log(10), np.log(2)/np.log(10)]))
+    assert np.array_equal(np.round(x.der,8), np.array([1.30288345, 0.86858896]))
 
     with pytest.raises(ValueError):
         ad.Variable(np.array([1,-1]), np.array([3,4])).log()
     with pytest.raises(ValueError):
         ad.Variable(np.array([0,2]), np.array([3,4])).log()
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([1,2]), np.array([3,4])).log(base = -1)
+    with pytest.raises(ValueError):
+        ad.Variable(np.array([1,2]), np.array([3,4])).log(base = "Natural")
 
 def test_sqrt():
     assert ad.Variable(1).sqrt().val == 1.0
@@ -396,6 +402,17 @@ def test_arccos_domain():
         ad.Variable(np.array([2, 2]), np.array([2, 2])).arccos()
     with pytest.raises(ValueError):
         ad.Variable(np.array([-2, 0.8]), np.array([-2, 0.7])).arccos()
+        
+def test_logistic():
+    x = ad.Variable(5, 1)
+    f = x.logistic()
+    assert f.val == 0.9933071490757153
+    assert f.der == 0.006648056670790156
+    
+    x = ad.Variable(np.array([1, 2, 3]), np.array([1, 1, 1]))
+    f = x.logistic()
+    assert np.array_equal(np.round(f.val, 8), np.array([0.73105858, 0.88079708, 0.95257413]))
+    assert np.array_equal(np.round(f.der, 8), np.array([0.19661193, 0.10499359, 0.04517666]))
 
 if __name__ == '__main__':
     test_arcsin_domain()
@@ -413,3 +430,4 @@ if __name__ == '__main__':
     test_cos()
     test_sin()
     test_repr()
+    test_logistic()
