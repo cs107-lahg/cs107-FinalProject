@@ -236,7 +236,7 @@ Descriptions of the implementation of our elementary functions are found in the 
 
 ## Extension
 
-### new/future feature section of the documentation from Milestone 2 
+### Future feature section of the documentation from Milestone 2 
 
 In our next milestone, we want to implement a Jacobian module to compute automatic differentiation for vector input of vector functions. In order to do that, we will include a new module called Jacobian. The package functions will change since we will have to now have to have a vector of values and a vector of derivatives and also support vector-valued operations. We will implement this by leveraging our current scalar-valued implentation.
 
@@ -250,7 +250,7 @@ The forward pass computes the partial derivative using the elementary functions,
 
 With this in mind, we plan to build a graph of nodes starting with our x and/or y inputs. Starting with the forward pass, x and/or y will become the root of our graph. As we build our expression, we would create a child node on our graph for each operation we perform. This would allow us to easily perform a reverse pass as we've created a parent-child relationship between the nodes. The gradient computations will be saved in our nodes and we would be able to use those weights in the reverse pass.
 
-__Milestone 2 Feedback__: 
+__Milestone 2 Feedback__: Good explanations! I am looking forward to the final submission.
 
 ### Description of your extension
 
