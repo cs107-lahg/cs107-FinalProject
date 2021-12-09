@@ -1307,7 +1307,7 @@ class Variable:
         return Variable(new_val, new_der)
 
 
-def make_variables(var_list, der_list):
+def make_variables(var_list, der_list=None):
     """
     Function to create a list of Variable objects
 
@@ -1316,7 +1316,7 @@ def make_variables(var_list, der_list):
     var_list : list of int or float
         input values of these new Variable objects.
     der_list : list of int or float
-        input derivative seeds of these new Variable objects.
+        input derivative seeds of these new Variable objects. 
 
     RAISES
     ------
@@ -1342,7 +1342,9 @@ def make_variables(var_list, der_list):
     >>> print(x[1])
     value = [1 5], derivative = [1 5]
     """
-
+    if not der_list:
+       der_list = np.eye(len(var_list))
+        
     if len(var_list) != len(der_list):
         raise ValueError(
             "The value list and derivative list should be of the same length"

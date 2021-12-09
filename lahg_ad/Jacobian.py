@@ -5,94 +5,112 @@ import lahg_ad as ad
 import numpy as np
 
 
-def Jacobian_der(func_list):
-    """
-    Function for computing the Jacobian Matrix for vector function
+class Vector:
+    def __init__(self, func_list):
+        """
+        This is a Vector class that computes and stores multivariate functions values and derivatives. 
+        
+        INPUTS
+        -------
+        func_list : a list of function expressions
+        
+        ATTRIBUTES
+        -------
+            a 2-D numpy array representing the 
+        """
+        
+        self.func_list = func_list
+        self.vals = self._calculate_vals()
+        self.jacobian = self._calculate_jacobian()
 
-    INPUTS
-    ------
-    func_list : a list of function expression
+    def _calculate_jacobian(self):
+        """
+        Function for computing the Jacobian Matrix for vector function
 
-    RETURNS
-    -------
-    numpy array
-        a 2-D numpy array representing the Jacobian Matrix
+        INPUTS
+        ------
+        self.func_list : a list of function expression passed in at initialization
 
-    RAISES
-    ------
-    Exception
-        if the list contains non-Variable object
-        if input functions have different dimensions
+        RETURNS
+        -------
+        numpy array
+            a 2-D numpy array representing the Jacobian Matrix
 
-    EXAMPLES
-    --------
-    >>> x = ad.Variable(4, np.array([1, 0]))
-    >>> y = ad.Variable(3, np.array([0, 1]))
-    >>> f = [x+y, x**3, x*y]
-    >>> print(Jacobian_der(f))
-    [[ 1  1]
-     [48  0]
-     [ 3  4]]
+        RAISES
+        ------
+        Exception
+            if the list contains non-Variable object
+            if input functions have different dimensions
 
-    >>> x = ad.Variable(4, np.array([1, 0]))
-    >>> f = [x+2, x**2]
-    >>> print(Jacobian_der(f))
-    [[1 0]
-     [8 0]]
+        EXAMPLES
+        --------
+        >>> x = ad.Variable(4, np.array([1, 0]))
+        >>> y = ad.Variable(3, np.array([0, 1]))
+        >>> f = Vector([x+y, x**3, x*y])
+        >>> print(f.jacobian)
+        [[ 1  1]
+         [48  0]
+         [ 3  4]]
 
-    """
-    der = []
-    expect_shape = len(func_list[0].der)
-    for func in func_list:
-        if not isinstance(func, ad.Variable):
-            raise Exception("The input must be a list of Variable objects")
-        if len(func.der) != expect_shape:
-            raise Exception("The input functions have different dimensions!")
-        der.append(func.der)
-    return np.array(der)
+        >>> x = ad.Variable(4, np.array([1, 0]))
+        >>> f = Vector([x+2, x**2])
+        >>> print(f.jacobian)
+        [[1 0]
+         [8 0]]
+
+        """
+        der = []
+        expect_shape = len(self.func_list[0].der)
+        for func in self.func_list:
+            if not isinstance(func, ad.Variable):
+                raise Exception("The input must be a list of Variable objects")
+            if len(func.der) != expect_shape:
+                raise Exception("The input functions have different dimensions!")
+            der.append(func.der)
+        return np.array(der)
 
 
-def Jacobian_val(func_list):
-    """
-    Function for computing the value of vector function
+    def _calculate_vals(self):
+        """
+        Function for computing the value of vector function
 
-    INPUTS
-    ------
-    func_list : a list of function expression
+        INPUTS
+        ------
+        func_list : a list of function expression
 
-    RAISES
-    ------
-    Exception
-        if the list contains non-Variable object
+        RAISES
+        ------
+        Exception
+            if the list contains non-Variable object
 
-    RETURENS
-    -------
-    TYPE
-         a 1-D numpy array representing the value of the vector function
+        RETURENS
+        -------
+        TYPE
+            a 1-D numpy array representing the value of the vector function
 
-    EXAMPLES
-    --------
-    >>> x = ad.Variable(4, np.array([1, 0]))
-    >>> y = ad.Variable(3, np.array([0, 1]))
-    >>> f = [x+y, x**3, x*y]
-    >>> print(Jacobian_val(f))
-    [ 7 64 12]
+        EXAMPLES
+        --------
+        >>> x = ad.Variable(4, np.array([1, 0]))
+        >>> y = ad.Variable(3, np.array([0, 1]))
+        >>> f = Vector([x+y, x**3, x*y])
+        >>> print(f.vals)
+        [ 7 64 12]
 
-    >>> x = ad.Variable(4, np.array([1, 0]))
-    >>> f = [x+2, x**2]
-    >>> print(Jacobian_val(f))
-    [ 6 16]
+        >>> x = ad.Variable(4, np.array([1, 0]))
+        >>> f = Vector([x+2, x**2])
+        >>> print(f.vals)
+        [ 6 16]
 
-    """
-    val = []
-    for func in func_list:
-        if not isinstance(func, ad.Variable):
-            raise Exception("The input must be a list of Variable objects")
-        val.append(func.val)
-    return np.array(val)
+        """
+        vals = []
+        for func in self.func_list:
+            if not isinstance(func, ad.Variable):
+                raise Exception("The input must be a list of Variable objects")
+            vals.append(func.val)
+        return np.array(vals)
 
 
 if __name__ == "__main__":
     import doctest
-
     doctest.testmod()
+    
