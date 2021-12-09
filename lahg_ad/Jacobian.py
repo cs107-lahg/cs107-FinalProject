@@ -5,7 +5,7 @@ import lahg_ad as ad
 import numpy as np
 
 
-def jacobian_der(func_list):
+def Jacobian_der(func_list):
     """
     Function for computing the Jacobian Matrix for vector function
 
@@ -52,7 +52,7 @@ def jacobian_der(func_list):
     return np.array(der)
 
 
-def jacobian_val(func_list):
+def Jacobian_val(func_list):
     """
     Function for computing the value of vector function
 
