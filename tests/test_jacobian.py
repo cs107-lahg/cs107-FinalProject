@@ -30,7 +30,13 @@ def test_jacobian():
     f = [z ** 2, x + y, x * y]
     with pytest.raises(Exception):
         ad.Vector(f)
+        
+def test_jacobian_repr():
+    x, y = ad.make_variables([2, 1])
+    f = ad.Vector([x+y, x*y])
+    assert f.__repr__() == "values:\n[3 2]\njacobian:\n[[1. 1.]\n [1. 2.]]"
 
 
 if __name__ == "__main__":
     test_jacobian()
+    test_jacobian_repr()
