@@ -52,6 +52,16 @@ class Variable:
         >>> print(x)
         value = [5 6], derivative = [6 2]
         """
+        # check type for value and derivative_seed
+        if not isinstance(value, (int, float, np.ndarray)) or not isinstance(derivative_seed, (int, float, np.ndarray)):
+            raise Exception("The value and derivative seed must be int, float, or np.ndarray")
+        
+        # if value is numpy array, the derivative seed must be a numpy array as well
+        if isinstance(value, np.ndarray):
+            if not isinstance(derivative_seed, np.ndarray):
+                raise Exception("value array has different length with derivative array")
+            elif len(value) != len(derivative_seed):
+                raise Exception("value array has different length with derivative array")
 
         if isinstance(value, np.ndarray) or isinstance(derivative_seed, np.ndarray):
             try:
@@ -122,7 +132,7 @@ class Variable:
         2
 
         >>> import numpy as np
-        >>> x = Variable(np.array([2, 1]), 3)
+        >>> x = Variable(np.array([2, 1]), np.array([3, 3]))
         >>> print(x.get_value())
         [2 1]
         """
@@ -1266,7 +1276,7 @@ class Variable:
         new_der = np.exp(-self.val) / ((1 + np.exp(-self.val)) ** 2) * self.der
         return Variable(new_val, new_der)
 
-            
+
     
 def make_variables(var_list, der_list):
     """
@@ -1343,6 +1353,19 @@ def make_variable(var,der):
     """
     return Variable(var, der)
 
+
+cos = Variable.cos
+sin = Variable.sin
+tan = Variable.tan
+logistic = Variable.logistic
+sqrt = Variable.sqrt
+log = Variable.log
+arcsin = Variable.arcsin
+arccos = Variable.arccos
+arctan = Variable.arctan
+sinh = Variable.sinh
+cosh = Variable.cosh
+tanh = Variable.tanh
 
 
 if __name__ == "__main__":
