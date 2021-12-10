@@ -16,6 +16,13 @@ def test_Variable():
     ad_var_2 = ad.Variable(np.array([2, 1]), np.array([3, 4]))
     assert np.array_equal(ad_var_2.val, np.array([2, 1]))
     assert np.array_equal(ad_var_2.der, np.array([3, 4]))
+    with pytest.raises(Exception):
+        ad.Variable(1, "string")
+    with pytest.raises(Exception):
+        ad.Variable(np.array([1,2,3]), 1)
+    with pytest.raises(Exception):
+        ad.Variable(np.array([1,2,3]), np.array([1,1]))
+    
 
 
 def test_repr():
@@ -59,6 +66,8 @@ def test_sin():
     x = ad.Variable(np.array([np.pi / 2, np.pi / 2]), np.array([0, 0])).sin()
     assert np.array_equal(x.val, np.array([1, 1]))
     assert np.array_equal(x.der, np.array([0, 0]))
+    assert ad.Variable(0).sin() == ad.sin(ad.Variable(0))
+    
 
 
 def test_cos():
@@ -69,6 +78,7 @@ def test_cos():
     x = ad.Variable(np.array([0, 0]), np.array([np.pi / 2, np.pi / 2])).cos()
     assert np.array_equal(x.val, np.array([1, 1]))
     assert np.array_equal(x.der, np.array([0, 0]))
+    assert ad.Variable(0).cos() == ad.cos(ad.Variable(0))
 
 
 def test_tan():
@@ -78,6 +88,7 @@ def test_tan():
     x = ad.Variable(np.array([np.pi / 4, 0]), np.array([0, 1])).tan()
     assert np.array_equal(x.val, np.array([np.tan(np.pi / 4), np.tan(0)]))
     assert np.array_equal(x.der, np.array([0, 1]))
+    assert ad.Variable(0).tan() == ad.tan(ad.Variable(0))
 
 
 def test_arcsin():
@@ -91,6 +102,8 @@ def test_arcsin():
         np.array([value1, value2]), np.array([deriv_seed1, deriv_seed2])
     ).arcsin()
     assert np.array_equal(x.val, np.array([np.arcsin(value1), np.arcsin(value2)]))
+    assert np.array_equal(x.der, np.array([1/(np.sqrt(1-value1**2)) * deriv_seed1, 1/(np.sqrt(1-value2**2)) * deriv_seed2]))
+    assert ad.Variable(0.5).arcsin() == ad.arcsin(ad.Variable(0.5))
     assert np.array_equal(
         x.der,
         np.array(
@@ -100,6 +113,7 @@ def test_arcsin():
             ]
         ),
     )
+
 
 
 def test_arccos():
@@ -113,6 +127,8 @@ def test_arccos():
         np.array([value1, value2]), np.array([deriv_seed1, deriv_seed2])
     ).arccos()
     assert np.array_equal(x.val, np.array([np.arccos(value1), np.arccos(value2)]))
+    assert np.array_equal(x.der, np.array([-1/(np.sqrt(1-value1**2)) * deriv_seed1 , -1/(np.sqrt(1-value2**2)) * deriv_seed2]))
+    assert ad.Variable(0.5).arccos() == ad.arccos(ad.Variable(0.5))
     assert np.array_equal(
         x.der,
         np.array(
@@ -122,6 +138,7 @@ def test_arccos():
             ]
         ),
     )
+
 
 
 def test_arctan():
@@ -135,6 +152,8 @@ def test_arctan():
         np.array([value1, value2]), np.array([deriv_seed1, deriv_seed2])
     ).arctan()
     assert np.array_equal(x.val, np.array([np.arctan(value1), np.arctan(value2)]))
+    assert np.array_equal(x.der, np.array([1/(1 + value1**2) * deriv_seed1, 1/(1 + value2**2) * deriv_seed2]))
+    assert ad.Variable(0.5).arctan() == ad.arctan(ad.Variable(0.5))
     assert np.array_equal(
         x.der,
         np.array(
@@ -150,6 +169,7 @@ def test_sinh():
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).sinh()
     assert np.array_equal(x.val, np.array([np.sinh(1), np.sinh(2)]))
     assert np.array_equal(x.der, np.array([np.cosh(1) * 3, np.cosh(2) * 4]))
+    assert ad.Variable(0.5).sinh() == ad.sinh(ad.Variable(0.5))
 
 
 def test_cosh():
@@ -159,8 +179,9 @@ def test_cosh():
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).cosh()
     assert np.array_equal(x.val, np.array([np.cosh(1), np.cosh(2)]))
     assert np.array_equal(x.der, np.array([np.sinh(1) * 3, np.sinh(2) * 4]))
-
-
+    assert ad.Variable(0.5).cosh() == ad.cosh(ad.Variable(0.5))
+    
+    
 def test_tanh():
     assert ad.Variable(0).tanh().val == 0.0
     assert ad.Variable(0).tanh().der == 1
@@ -169,10 +190,12 @@ def test_tanh():
 
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).tanh()
     assert np.array_equal(x.val, np.array([np.tanh(1), np.tanh(2)]))
+    assert np.array_equal(x.der, np.array([(1 / (np.cosh(1) ** 2)) * 3, (1 / (np.cosh(2) ** 2)) * 4]))
+    assert ad.Variable(0.5).tanh() == ad.tanh(ad.Variable(0.5))
     assert np.array_equal(
         x.der, np.array([(1 / (np.cosh(1) ** 2)) * 3, (1 / (np.cosh(2) ** 2)) * 4])
     )
-
+    
 
 def test_exp():
     assert ad.Variable(1.05, 3.2).exp(base=2).val == 2 ** 1.05
@@ -181,6 +204,7 @@ def test_exp():
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).exp()
     assert np.array_equal(x.val, np.array([np.exp(1), np.exp(2)]))
     assert np.array_equal(x.der, np.array([np.exp(1) * 3, np.exp(2) * 4]))
+    assert ad.Variable(0.5).exp() == ad.exp(ad.Variable(0.5))
     with pytest.raises(ValueError):
         ad.Variable(1.05, 3.2).exp(base="Exponential")
 
@@ -188,7 +212,7 @@ def test_exp():
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)
     assert (ad.Variable(1, 2) == 1) == False
-    assert ad.Variable(np.array([2, 1]), 3) == ad.make_variable(np.array([2, 1]), 3)
+    assert ad.Variable(np.array([2, 1]), np.array([3,3])) == ad.make_variable(np.array([2, 1]), np.array([3,3]))
     assert ad.Variable(3, np.array([4, 5])) == ad.make_variable(3, np.array([4, 5]))
 
 
@@ -201,6 +225,7 @@ def test_ne():
         ad.Variable(np.array([1, 2]), np.array([3, 4])),
     )
     assert np.not_equal(ad.Variable(np.array([1, 2]), np.array([1, 2])), 1)
+    assert (ad.Variable(1, 2) != ad.Variable(1, 2)) == False
 
 
 def test_add():
@@ -448,6 +473,10 @@ def test_log():
     with pytest.raises(ValueError):
         ad.Variable(0).log()
 
+    x = ad.Variable(np.array([1,2]), np.array([3,4])).log()
+    assert np.array_equal(x.val, np.array([np.log(1)/np.log(10), np.log(2)/np.log(10)]))
+    assert np.array_equal(np.round(x.der,8), np.array([1.30288345, 0.86858896]))
+    assert ad.Variable(0.5).log() == ad.log(ad.Variable(0.5))
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).log()
     assert np.array_equal(
         x.val, np.array([np.log(1) / np.log(10), np.log(2) / np.log(10)])
@@ -466,6 +495,8 @@ def test_log():
 
 def test_sqrt():
     assert ad.Variable(1).sqrt().val == 1.0
+    assert ad.Variable(1).sqrt().der == .5
+    assert ad.Variable(0.5).sqrt() == ad.sqrt(ad.Variable(0.5))
     assert ad.Variable(1).sqrt().der == 0.5
     with pytest.raises(ValueError):
         ad.Variable(-1).sqrt()
@@ -478,9 +509,9 @@ def test_sqrt():
 
 
 def test_variable_types():
-    with pytest.raises(TypeError):
+    with pytest.raises(Exception):
         assert ad.Variable("test")
-    with pytest.raises(ValueError):
+    with pytest.raises(Exception):
         assert ad.Variable(np.array(["test", "test"]), 2)
 
 
@@ -488,7 +519,7 @@ def test_make_variable():
     assert ad.make_variable(3, 5) == ad.Variable(3, 5)
     assert ad.make_variable(3, 5).val == 3.0
     assert ad.make_variable(3, 5).der == 5.0
-    assert ad.make_variable(np.array([1, 2]), 5) == ad.Variable(np.array([1, 2]), 5)
+    assert ad.make_variable(np.array([1, 2]), np.array([5,5])) == ad.Variable(np.array([1, 2]), np.array([5,5]))
     assert ad.make_variable(np.array([1, 2]), np.array([3, 3])) == ad.Variable(
         np.array([1, 2]), np.array([3, 3])
     )
@@ -539,6 +570,9 @@ def test_logistic():
 
     x = ad.Variable(np.array([1, 2, 3]), np.array([1, 1, 1]))
     f = x.logistic()
+    assert np.array_equal(np.round(f.val, 8), np.array([0.73105858, 0.88079708, 0.95257413]))
+    assert np.array_equal(np.round(f.der, 8), np.array([0.19661193, 0.10499359, 0.04517666]))
+    assert ad.Variable(0.5).logistic() == ad.logistic(ad.Variable(0.5))
     assert np.array_equal(
         np.round(f.val, 8), np.array([0.73105858, 0.88079708, 0.95257413])
     )
@@ -548,6 +582,7 @@ def test_logistic():
 
 
 if __name__ == "__main__":
+    test_arccos_domain()
     test_arcsin_domain()
     test_get_derivative()
     test_get_value()
@@ -564,3 +599,4 @@ if __name__ == "__main__":
     test_sin()
     test_repr()
     test_logistic()
+    test_variable_types()
