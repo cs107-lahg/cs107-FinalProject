@@ -20,6 +20,8 @@ def test_Variable():
         ad.Variable(1, "string")
     with pytest.raises(Exception):
         ad.Variable(np.array([1,2,3]), 1)
+    with pytest.raises(Exception):
+        ad.Variable(np.array([1,2,3]), np.array([1,1]))
     
 
 
@@ -223,6 +225,7 @@ def test_ne():
         ad.Variable(np.array([1, 2]), np.array([3, 4])),
     )
     assert np.not_equal(ad.Variable(np.array([1, 2]), np.array([1, 2])), 1)
+    assert (ad.Variable(1, 2) != ad.Variable(1, 2)) == False
 
 
 def test_add():
