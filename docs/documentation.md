@@ -89,7 +89,7 @@ To make use of forward automatic differentiation function, users will need to in
 
 x = ad.make_variable(2,1)
 
-f = (x * x + np.sin(x) + 1 - np.cos(x))**0.5
+f = ad.sqrt(x * x + ad.sin(x) + 1 - ad.cos(x))
 
 print(f)
 
@@ -109,7 +109,7 @@ x, y = ad.make_variables([2,1])
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])
 # x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
 
-f = (x * y + np.sin(x) + 1 - np.cos(y))**0.5
+f = (x * y + ad.sin(x) + 1 - ad.cos(y))**0.5
 
 print(f)
 
@@ -272,6 +272,8 @@ The class methods for our Forward/Reverse Mode Implementation are described belo
 | \_\_rsub\_\_        | This method returns other + (-self)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | \_\_rtruediv\_\_    | This method is similar to \_\_truediv\_\_, however instead of self/other, \_\_rtruediv\_\_ handles the case of other/self                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | self.logistic       | This method performs the logistic operation. The new value is calculated using 1 / (1 + np.exp(-self.val)) and the new derivative is calculated using np.exp(-self.val) / ((1 + np.exp(-self.val)) \*\* 2) \* self.der. A new Variable object is returned with the new value and derivative.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| self.sqrt      | This method performs the square root operation. This is the sample implementation as \_\_pow\_\_(0.5). A new Variable object is returned with the new value and derivative.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+
 
 ### External dependencies
 
