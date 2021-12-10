@@ -202,6 +202,7 @@ def test_exp():
     x = ad.Variable(np.array([1, 2]), np.array([3, 4])).exp()
     assert np.array_equal(x.val, np.array([np.exp(1), np.exp(2)]))
     assert np.array_equal(x.der, np.array([np.exp(1) * 3, np.exp(2) * 4]))
+    assert ad.Variable(0.5).exp() == ad.exp(ad.Variable(0.5))
     with pytest.raises(ValueError):
         ad.Variable(1.05, 3.2).exp(base="Exponential")
 
@@ -507,7 +508,7 @@ def test_sqrt():
 def test_variable_types():
     with pytest.raises(Exception):
         assert ad.Variable("test")
-    with pytest.raises(ValueError):
+    with pytest.raises(Exception):
         assert ad.Variable(np.array(["test", "test"]), 2)
 
 
