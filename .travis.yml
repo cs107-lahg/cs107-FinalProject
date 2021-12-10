@@ -1,8 +1,4 @@
 language: python
-branches:
-    only:
-    - main
-    - stable
 python:
     - "3.6"
 before_install:
