@@ -209,7 +209,7 @@ def test_exp():
 def test_eq():
     assert ad.Variable(1, 2) == ad.make_variable(1, 2)
     assert (ad.Variable(1, 2) == 1) == False
-    assert ad.Variable(np.array([2, 1]), 3) == ad.make_variable(np.array([2, 1]), 3)
+    assert ad.Variable(np.array([2, 1]), np.array([3,3])) == ad.make_variable(np.array([2, 1]), np.array([3,3]))
     assert ad.Variable(3, np.array([4, 5])) == ad.make_variable(3, np.array([4, 5]))
 
 
@@ -505,7 +505,7 @@ def test_sqrt():
 
 
 def test_variable_types():
-    with pytest.raises(TypeError):
+    with pytest.raises(Exception):
         assert ad.Variable("test")
     with pytest.raises(ValueError):
         assert ad.Variable(np.array(["test", "test"]), 2)
@@ -515,7 +515,7 @@ def test_make_variable():
     assert ad.make_variable(3, 5) == ad.Variable(3, 5)
     assert ad.make_variable(3, 5).val == 3.0
     assert ad.make_variable(3, 5).der == 5.0
-    assert ad.make_variable(np.array([1, 2]), 5) == ad.Variable(np.array([1, 2]), 5)
+    assert ad.make_variable(np.array([1, 2]), np.array([5,5])) == ad.Variable(np.array([1, 2]), np.array([5,5]))
     assert ad.make_variable(np.array([1, 2]), np.array([3, 3])) == ad.Variable(
         np.array([1, 2]), np.array([3, 3])
     )
@@ -578,6 +578,7 @@ def test_logistic():
 
 
 if __name__ == "__main__":
+    test_arccos_domain()
     test_arcsin_domain()
     test_get_derivative()
     test_get_value()
@@ -594,3 +595,4 @@ if __name__ == "__main__":
     test_sin()
     test_repr()
     test_logistic()
+    test_variable_types()
