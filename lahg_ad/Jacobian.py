@@ -46,7 +46,7 @@ class Vector:
         --------
         >>> x = ad.Variable(4, np.array([1, 0]))
         >>> y = ad.Variable(3, np.array([0, 1]))
-        >>> f = Vector([x+y, x**3, x*y])
+        >>> f = ad.Vector([x+y, x**3, x*y])
         >>> print(f.jacobian)
         [[ 1  1]
          [48  0]
@@ -92,12 +92,12 @@ class Vector:
         --------
         >>> x = ad.Variable(4, np.array([1, 0]))
         >>> y = ad.Variable(3, np.array([0, 1]))
-        >>> f = Vector([x+y, x**3, x*y])
+        >>> f = ad.Vector([x+y, x**3, x*y])
         >>> print(f.vals)
         [ 7 64 12]
 
         >>> x = ad.Variable(4, np.array([1, 0]))
-        >>> f = Vector([x+2, x**2])
+        >>> f = ad.Vector([x+2, x**2])
         >>> print(f.vals)
         [ 6 16]
 
@@ -108,6 +108,32 @@ class Vector:
                 raise Exception("The input must be a list of Variable objects")
             vals.append(func.val)
         return np.array(vals)
+    
+    def __repr__(self):
+        """
+        Dunder method for printing Vector class attributes
+
+        INPUTS
+        ------
+        None
+
+        RETURNS
+        -------
+        The attributes of the Vector
+        
+        EXAMPLES
+        --------
+        >>> x, y = ad.make_variables([2, 1])
+        >>> f = ad.Vector([x+y, x*y])
+        >>> print(f)
+        values:
+        [3 2]
+        jacobian:
+        [[1. 1.]
+         [1. 2.]]
+        """
+        
+        return f"values:\n{self.vals}\njacobian:\n{self.jacobian}"
 
 
 if __name__ == "__main__":

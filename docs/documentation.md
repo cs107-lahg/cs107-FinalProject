@@ -66,17 +66,22 @@ pip install -r requirements.txt
 
 ### Installation Method 2: Install from PyPI
 
-......
-
-### AD forward mode and Jacobian
-
-Then users can import the package and all modules included using the command:
+We have made our package publically available on 'The Python Package Index (PyPI)'. You can access our package through the `pip` command, by running
 
 ```python
+pip install lahg_ad
+```
 
+After the package is installed, users can import the package and all modules included using the command:
+
+```python
 import lagh_ad as ad
 
 ```
+
+### AD forward mode and Jacobian
+
+#### Scalar valued functions with scalar derivatives
 
 To make use of forward automatic differentiation function, users will need to initiate AD variables/objects with value at a specified point and pass the derivative seed, for example
 
@@ -84,12 +89,53 @@ To make use of forward automatic differentiation function, users will need to in
 
 x = ad.make_variable(2,1)
 
-y = ad.make_variable(0,1)
+f = (x * x + np.sin(x) + 1 - np.cos(x))**0.5
+
+print(f)
+
+```
+
+#### Scalar valued functions with vector-valued derivatives
+
+To make use of forward automatic differentiation function multiple variables, we recommend using the `make_variables` function from our package.
+The user is able to resort to their own seed derivatives -- the default when no seed derivatives are parsed is to set each of the variables
+seed derivative to 1 (see code below).
+
+```python
+
+x, y = ad.make_variables([2,1])
+
+# This is equivalent to 
+# x, y = ad.make_varables([2,1], [[1,0], [0,1]])
+# x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
 
 f = (x * y + np.sin(x) + 1 - np.cos(y))**0.5
 
 print(f)
 
+```
+
+#### Vector valued functions with matrix-valued derivatives
+
+To make use of forward automatic differentiation function multiple variables, where the value of the function are also vector valued, we
+recommend using our Vector class. This takes a list of functions and automatically calculates the values and Jacobian. See below for an example.
+
+```python
+
+x, y = ad.make_variables([2,1])
+
+# This is equivalent to 
+# x, y = ad.make_varables([2,1], [[1,0], [0,1]])
+# x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
+
+f = ad.Vector([x + y, x * y])
+
+>>> print(f.vals)
+array([3, 2])
+
+>>> print(f.jacobian)
+array([[1., 1.],
+       [1., 2.]])
 ```
 
 ### AD reverse mode
