@@ -89,7 +89,7 @@ To make use of forward automatic differentiation function, users will need to in
 
 x = ad.make_variable(2,1)
 
-f = (x * x + np.sin(x) + 1 - np.cos(x))**0.5
+f = ad.sqrt(x * x + ad.sin(x) + 1 - ad.cos(x))
 
 print(f)
 
@@ -109,7 +109,7 @@ x, y = ad.make_variables([2,1])
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])
 # x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
 
-f = (x * y + np.sin(x) + 1 - np.cos(y))**0.5
+f = (x * y + ad.sin(x) + 1 - ad.cos(y))**0.5
 
 print(f)
 
