@@ -1397,7 +1397,7 @@ def make_variable(var, der):
     return Variable(var, der)
 
 
-
+exp = Variable.exp
 cos = Variable.cos
 sin = Variable.sin
 tan = Variable.tan
