@@ -102,8 +102,9 @@ The user is able to resort to their own seed derivatives -- the default when no 
 seed derivative to 1 (see code below).
 
 ```python
-
-x, y = ad.make_variables([2,1])
+# Parsing in np.eye(2) sets the derivative seed of
+# x to be [1,0] and the derivative seed of y to be [0,1]
+x, y = ad.make_variables([2,1], np.eye(2))
 
 # This is equivalent to
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])
@@ -121,8 +122,9 @@ To make use of forward automatic differentiation function multiple variables, wh
 recommend using our Vector class. This takes a list of functions and automatically calculates the values and Jacobian. See below for an example.
 
 ```python
-
-x, y = ad.make_variables([2,1])
+# Parsing in np.eye(2) sets the derivative seed of
+# x to be [1,0] and the derivative seed of y to be [0,1]
+x, y = ad.make_variables([2,1], np.eye(2))
 
 # This is equivalent to
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])

@@ -4,4 +4,4 @@ from .rd import RD
 from .Jacobian import *
 
 # Version of lahg_ad package
-__version__ = "1.0.0"
+__version__ = "1.2.0"

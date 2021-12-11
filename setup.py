@@ -7,7 +7,7 @@ README = (HERE/ "README.md").read_text()
 
 setup(
     name="lahg_ad",
-    version="1.0.0",
+    version="1.2.0",
     description="A simple AutoDiff package that supports forward and reverse differentiation, brought to you by the LAHG Society.",
     long_description=README,
     long_description_content_type='text/markdown',
