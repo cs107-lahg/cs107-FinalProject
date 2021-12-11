@@ -1353,8 +1353,6 @@ def make_variables(var_list, der_list=None):
     >>> print(x[1])
     value = [1 5], derivative = [1 5]
     """
-    if not der_list:
-       der_list = np.eye(len(var_list))
         
     if len(var_list) != len(der_list):
         raise ValueError(
