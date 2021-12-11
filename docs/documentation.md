@@ -228,7 +228,7 @@ lagh_ad
 
 ## Implementation details
 
-### ### Core data structures
+### Core data structures
 
 For forward mode, the core data structures we used for our implementation are numpy arrays and python dictionaries to store our partial derivatives. For reverse mode, except from the data structures used in forward mode, python list and tuple is also used to store the parent-child relationship for compute derivative recursively.
 
