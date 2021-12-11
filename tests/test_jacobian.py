@@ -32,7 +32,7 @@ def test_jacobian():
         ad.Vector(f)
         
 def test_jacobian_repr():
-    x, y = ad.make_variables([2, 1])
+    x, y = ad.make_variables([2, 1], np.eye(2))
     f = ad.Vector([x+y, x*y])
     assert f.__repr__() == "values:\n[3 2]\njacobian:\n[[1. 1.]\n [1. 2.]]"
 
