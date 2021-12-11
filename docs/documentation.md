@@ -105,7 +105,7 @@ seed derivative to 1 (see code below).
 
 x, y = ad.make_variables([2,1])
 
-# This is equivalent to 
+# This is equivalent to
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])
 # x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
 
@@ -124,7 +124,7 @@ recommend using our Vector class. This takes a list of functions and automatical
 
 x, y = ad.make_variables([2,1])
 
-# This is equivalent to 
+# This is equivalent to
 # x, y = ad.make_varables([2,1], [[1,0], [0,1]])
 # x, y = ad.Variable(2, [1,0]), ad.Variable(1, [0,1])
 
@@ -178,28 +178,28 @@ print(y.get_derivative())
 
 ```
 lagh_ad
-├── README.md               Main project README
-├── requirements.txt        Package dependencies
-├── setup.py                setup function for package
+├── README.md                       Main project README
+├── requirements.txt                Package dependencies
+├── setup.py                        setup function for package
 │
-├── docs/                   Main project documentation
-│   ├── figures/            Folder for figures
-│   ├── README.md           README for docs
-|   ├── documentation.md    Final Documentation for lahg_ad package
-│   └── milestone[x].md     Documentation for each milestone
+├── docs/                           Main project documentation
+│   ├── figures/                    Folder for figures
+│   ├── README.md                   README for docs
+|   ├── documentation.md            Final Documentation for lahg_ad package
+│   └── milestone[x].md             Documentation for each milestone
 │
-├── dev/                    Project planning/development (optional)
+├── cov_report/                     Contains local code coverage report
 │
-├── cov_report/             Contains local code coverage report
+├── src/                            Package source files
+│   ├── fd.py                       Functions for forward mode automatic differentiation
+|   ├── Jacobian.py                 Helper functions to compute Jacobian Matrix
+│   └── rd.py                       Functions for reverse mode automatic differentiation
 │
-├── src/                    Package source files
-│   ├── fd.py               Main constructor for forward mode
-|   ├── Jacobian.py         Helper functions to compute Jacobian Matrix
-│   └── rv.py               Reverse mode
-│
-└── tests/                  Package test scripts
-    ├── run_tests.py        script that runs all tests
-    └── test_[x].py         tests [x].py
+└── tests/                          Package test scripts
+    ├── test_fd.py                  Tests for forward mode implementation
+    ├── test_rd.py                  Tests for reverse mode implementation
+    ├── test_jacobian.py            Tests for jacobian helper functions
+    └── test_composite_function.py  Tests for composite functions
 ```
 
 ### Basic modules and what they do
@@ -212,7 +212,7 @@ lagh_ad
 
 ### Where do the tests live? How are they run? How are they integrated?
 
-- The tests lie under tests repository containing three testing file -- **test_fd.py**, **test_rd.py**, **test_helper.py** **test_composite_functions.py** that tests the forward mode, reverse mode, helper function and composite function respectively.
+- The tests lie under tests repository containing four testing files -- **test_fd.py**, **test_rd.py**, **test_helper.py** and **test_composite_functions.py** that tests the forward mode, reverse mode, helper function and composite function respectively.
 
 - Travis CI and CodeCov are used to test our package and check code coverage after every commit that changes lahg_ad/ files.
 
@@ -272,8 +272,7 @@ The class methods for our Forward/Reverse Mode Implementation are described belo
 | \_\_rsub\_\_        | This method returns other + (-self)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | \_\_rtruediv\_\_    | This method is similar to \_\_truediv\_\_, however instead of self/other, \_\_rtruediv\_\_ handles the case of other/self                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | self.logistic       | This method performs the logistic operation. The new value is calculated using 1 / (1 + np.exp(-self.val)) and the new derivative is calculated using np.exp(-self.val) / ((1 + np.exp(-self.val)) \*\* 2) \* self.der. A new Variable object is returned with the new value and derivative.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| self.sqrt      | This method performs the square root operation. This is the sample implementation as \_\_pow\_\_(0.5). A new Variable object is returned with the new value and derivative.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-
+| self.sqrt           | This method performs the square root operation. This is the sample implementation as \_\_pow\_\_(0.5). A new Variable object is returned with the new value and derivative.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### External dependencies
 
@@ -344,13 +343,13 @@ The package is freely distributed through PyPI, it should be accessible to anyon
 Our code is also open-sourced under the protection of MIT license, which means everyone could contribute to our code base, which is welcomed and encouraged. Our teammates will review the pull request and carefully evaluate the quality of code contribution without discriminating against race, color, religion, gender, gender expression, age, national origin, disability, marital status, sexual orientation, or military status, in any of its activities or operations. If a pull request is rejected, detailed comments will be provided.
 
 Some criteria upon which we will decide which pull requests to approve are:
-* Consistency in formatting to how we have formatted the rest of the code
-* Presence of thorough documentation and Docstrings 
-* Describes how we can test their code
-* Includes test files that we can run
-* Tests have a minimum code coverage of 90%
-* Code makes a significant contribution to the existing package
 
+- Consistency in formatting to how we have formatted the rest of the code
+- Presence of thorough documentation and Docstrings
+- Describes how we can test their code
+- Includes test files that we can run
+- Tests have a minimum code coverage of 90%
+- Code makes a significant contribution to the existing package
 
 ## Future
 
