@@ -68,8 +68,8 @@ pip install -r requirements.txt
 
 We have made our package publically available on 'The Python Package Index (PyPI)'. You can access our package through the `pip` command, by running
 
-```python
-pip install lahg_ad
+```
+pip install lahg-ad
 ```
 
 After the package is installed, users can import the package and all modules included using the command:
