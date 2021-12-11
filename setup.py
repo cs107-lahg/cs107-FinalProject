@@ -11,7 +11,7 @@ setup(
     description="A simple AutoDiff package that supports forward and reverse differentiation, brought to you by the LAHG Society.",
     long_description=README,
     long_description_content_type='text/markdown',
-    url="https://https://github.com/cs107-lahg/cs107-FinalProject",
+    url="https://github.com/cs107-lahg/cs107-FinalProject",
     auther='LAHG Society',
     license='MIT',
     packages=['lahg_ad'],

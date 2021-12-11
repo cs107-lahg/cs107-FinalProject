@@ -8,8 +8,6 @@ A simple package for automatic differentiation for Harvard AC207/CS107.
 
 ## Broader Impact and Inclusivity Statement
 
-## Broader Impact and Inclusivity Statement
-
 ### The potential broader impacts and implications of your software
 
 Automatic differentiation has a large impact in many fields including Statistics, Mathematics, Bioinformatics, Physics, Machine Learning and so on. Its application diverges in various context not only in scientific research, but also in business and governance. Nowadays these data-driven technologies that employs automatic differentiation as its basic algorithm has shaped the world to be a better one. It provides more accurate financial service using NLP, provides medical artificial intelligence to advise physicians, as well as making more accurate predictions of Economic trends.
@@ -25,9 +23,10 @@ The package is freely distributed through PyPI, it should be accessible to anyon
 Our code is also open-sourced under the protection of MIT license, which means everyone could contribute to our code base, which is welcomed and encouraged. Our teammates will review the pull request and carefully evaluate the quality of code contribution without discriminating against race, color, religion, gender, gender expression, age, national origin, disability, marital status, sexual orientation, or military status, in any of its activities or operations. If a pull request is rejected, detailed comments will be provided.
 
 Some criteria upon which we will decide which pull requests to approve are:
-* Consistency in formatting to how we have formatted the rest of the code
-* Presence of thorough documentation and Docstrings 
-* Describes how we can test their code
-* Includes test files that we can run
-* Tests have a minimum code coverage of 90%
-* Code makes a significant contribution to the existing package
+
+- Consistency in formatting to how we have formatted the rest of the code
+- Presence of thorough documentation and Docstrings
+- Describes how we can test their code
+- Includes test files that we can run
+- Tests have a minimum code coverage of 90%
+- Code makes a significant contribution to the existing package
