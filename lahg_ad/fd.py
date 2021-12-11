@@ -915,7 +915,7 @@ class Variable:
 
         # Raising a Variable object with vector input to the power of a negative float
         >>> import numpy as np
-        >>> x = Variable(np.array(np.array([5,2]), np.array([5,6]))
+        >>> x = Variable(np.array([5,2]), np.array([5,6]))
         >>> y = -3.5
         >>> f = x ** y
         >>> print(f)
@@ -927,7 +927,7 @@ class Variable:
         >>> y = Variable(np.array([2,1]), np.array([1,2]))
         >>> f = x ** y
         >>> print(f)
-        value = [9, 2], derivative = [39.8875106, 8.77258872]
+        value = [9 2], derivative = [39.8875106   8.77258872]
         """
 
         if not (isinstance(other, (int, float)) or isinstance(other, Variable)):
